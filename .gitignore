@@ -1,0 +1,10 @@
+# Configuracion local (credenciales de BD)
+includes/config.php
+
+# Archivos subidos por usuarios
+uploads/
+
+# Sistema
+*.log
+.DS_Store
+Thumbs.db
