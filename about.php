@@ -4,13 +4,13 @@
 
 <main class="flex-grow">
   <!-- Hero -->
-  <section class="about-hero relative flex items-center overflow-hidden" style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuCRJeVelvX79zscak4XoUo7ppqf5Ud7I3hMn1o2mM38xpsm9nd1Cp0HSjhb_DM8-RGiy3iGO5QuKvUXuJ722ix0PpFtA3BISwSF1mFfUzBmYXJNmXx08arn3VCIyPvThZ6zi50s-H_U3EdoNE60d4oFEh0GBUxPJx2Z5Qy8ToaezLlp_N8jlnSSY7kHEmkN7x6kjdAZfA8Ta9THrV1y0oHCpf223Lts4ThX0B_0-s8vy5hITY5O70UOvgvidDIla7HtG2V2-pvsrt2O')">
+  <section class="about-hero relative flex items-center overflow-hidden">
     <div class="about-hero-overlay"></div>
-    <div class="container-bardial relative z-10 pt-32 pb-24 text-center">
-      <p class="about-hero-eyebrow">Bardial · desde 2004</p>
-      <h1 class="about-hero-title">Elevando el Estándar<br/><em>del Lujo Inmobiliario</em></h1>
-      <p class="about-hero-copy">Redefiniendo la exclusividad y la discreción en el mercado de propiedades de alto valor desde 2004. Nuestra misión es conectar a individuos exigentes con espacios extraordinarios.</p>
-      <a href="#historia" class="about-hero-btn">
+    <div class="reveal-group container-bardial relative z-10 pt-32 pb-24 text-center">
+      <p class="about-hero-eyebrow reveal">Bardial · desde 2004</p>
+      <h1 class="about-hero-title reveal">Elevando el Estándar<br/><em>del Lujo Inmobiliario</em></h1>
+      <p class="about-hero-copy reveal">Redefiniendo la exclusividad y la discreción en el mercado de propiedades de alto valor desde 2004. Nuestra misión es conectar a individuos exigentes con espacios extraordinarios.</p>
+      <a href="#historia" class="about-hero-btn reveal">
         Descubre Nuestra Historia
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
       </a>
@@ -21,7 +21,7 @@
   <section id="historia" class="py-24 md:py-32" style="background:var(--color-cream);">
     <div class="container-bardial">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center">
-        <div class="md:col-span-5 order-1 md:order-1">
+        <div class="reveal md:col-span-5 order-1 md:order-1">
           <p class="eyebrow">Nuestra Historia</p>
           <h2 class="about-section-title mt-6">Un Legado de Excelencia desde 2004</h2>
           <div class="about-rule"></div>
@@ -39,10 +39,10 @@
           </div>
         </div>
         <div class="md:col-span-6 md:col-start-7 order-2 md:order-2 relative">
-          <div class="about-photo overflow-hidden rounded-2xl rounded-tr-[10rem]">
+          <div class="about-photo reveal reveal--arch overflow-hidden rounded-2xl rounded-tr-[10rem]">
             <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrbi-zU4Ghzlhe0xELEDmDYIlkn2bVAr4JgPICeTSACNRxY43jzCPFu35KcTpmAbnLsMWS_ZHe5_Cdp7VRYA8bEG-TnvMO0m47CBLQJQPFBYzR3Mi7-DMVVSz6_0h52GV23clPDTOjLBEmLULpZLk6LExw5LeFwDeR_qHry4CiX0WBlRfi5bZA0kGS8wH-Vg8sSIoy68wYCgAOKmhc0nrKVdG29vrIaO5IBlHAjj3RvF4YfxkRFkCkXov-zxLV03zhqDbLcuH9YWdx" alt="Planos arquitectónicos sobre un escritorio de roble oscuro con una maqueta de villa al fondo"/>
           </div>
-          <div class="about-badge hidden md:flex">
+          <div class="about-badge reveal hidden md:flex" style="--reveal-delay:300ms;">
             <span>20</span>
             <span>Años de<br/>Experiencia</span>
           </div>
@@ -54,14 +54,14 @@
   <!-- Valores -->
   <section class="py-24 md:py-32" style="background:var(--color-cream-alt);">
     <div class="container-bardial">
-      <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="reveal text-center max-w-3xl mx-auto mb-16">
         <p class="eyebrow justify-center">Nuestros Valores</p>
         <h2 class="about-section-title mt-5">Nuestros Valores Fundamentales</h2>
         <div class="about-rule mx-auto"></div>
         <p class="about-copy mt-5">Los pilares que sostienen cada interacción, negociación y asesoramiento en Bardial Inmobiliaria.</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-start">
-        <article class="about-value-card">
+      <div class="reveal-group grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-start">
+        <article class="about-value-card reveal">
           <div class="flex items-start justify-between">
             <span class="about-value-icon"><span class="material-symbols-outlined">domain_verification</span></span>
             <span class="about-value-num">01</span>
@@ -69,7 +69,7 @@
           <h3>Profesionalismo Riguroso</h3>
           <p>Abordamos cada cartera inmobiliaria con la misma disciplina analítica que los activos financieros. Nuestro equipo posee una profunda comprensión técnica, legal y comercial del mercado de alto standing.</p>
         </article>
-        <article class="about-value-card about-value-card--raised">
+        <article class="about-value-card about-value-card--raised reveal">
           <div class="flex items-start justify-between">
             <span class="about-value-icon"><span class="material-symbols-outlined">lock</span></span>
             <span class="about-value-num">02</span>
@@ -77,7 +77,7 @@
           <h3>Confidencialidad Absoluta</h3>
           <p>Entendemos que la privacidad es el máximo lujo. Operamos bajo estrictos protocolos de discreción, protegiendo la identidad y los intereses de nuestros clientes en todo momento y en cada transacción.</p>
         </article>
-        <article class="about-value-card">
+        <article class="about-value-card reveal">
           <div class="flex items-start justify-between">
             <span class="about-value-icon"><span class="material-symbols-outlined">public</span></span>
             <span class="about-value-num">03</span>
@@ -91,7 +91,7 @@
 
   <!-- Cierre -->
   <section class="py-20 md:py-24" style="background:var(--color-navy);">
-    <div class="container-bardial flex flex-col md:flex-row items-center justify-between gap-8">
+    <div class="reveal container-bardial flex flex-col md:flex-row items-center justify-between gap-8">
       <div>
         <p class="about-cta-eyebrow">Hablemos</p>
         <h2 class="about-cta-title">Tu próximo espacio comienza aquí.</h2>

@@ -52,5 +52,29 @@
         form.reset();
       });
     }
+
+    // Reveal on scroll.
+    var revealTargets = document.querySelectorAll('.reveal, .reveal--arch, .reveal--line');
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!('IntersectionObserver' in window) || reduceMotion) {
+      revealTargets.forEach(function (el) { el.classList.add('is-visible'); });
+    } else {
+      var revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+      revealTargets.forEach(function (el) {
+        // El hero y lo que ya está en pantalla se revelan de inmediato.
+        var rect = el.getBoundingClientRect();
+        if (el.closest('#inicio') || (rect.top < window.innerHeight * 0.95 && rect.bottom > 0)) {
+          el.classList.add('is-visible');
+        } else {
+          revealObserver.observe(el);
+        }
+      });
+    }
   });
 })();

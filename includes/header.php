@@ -7,16 +7,10 @@ $navItems = [
     ['key' => 'contacto',   'label' => 'Contacto',      'href' => 'contacto.php'],
 ];
 ?>
-<header class="absolute top-0 left-0 w-full z-30" aria-label="Cabecera principal">
+<header class="site-header fixed top-0 left-0 w-full z-30" aria-label="Cabecera principal">
   <div class="container-bardial h-24 flex items-center justify-between">
-    <a href="index.php#inicio" class="flex items-center gap-3" aria-label="Bardial — inicio">
-      <svg width="36" height="36" viewBox="0 0 40 40" fill="none" stroke="#b28c48" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M6 18 L20 7 L34 18"/>
-        <path d="M10 17 V32 H30 V17"/>
-        <path d="M14 32 V23 H20 V32"/>
-        <path d="M24 20 H27"/>
-      </svg>
-      <span style="font-size:1.15rem; font-weight:600; letter-spacing:.28em; color:var(--color-navy);">BARDIAL</span>
+    <a href="index.php#inicio" class="flex items-center" aria-label="Bardial — inicio">
+      <img class="site-logo" src="assets/images/logo.png" alt="Bardial"/>
     </a>
 
     <nav class="hidden lg:flex items-center gap-9" aria-label="Navegación principal">

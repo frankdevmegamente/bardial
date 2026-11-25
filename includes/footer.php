@@ -1,9 +1,8 @@
 <footer class="mt-auto" style="background:var(--color-navy-footer); color:#e9edf0; padding:24px 40px;">
   <div class="mx-auto" style="max-width:var(--container-max);">
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-      <a href="index.php#inicio" class="flex items-baseline gap-3" aria-label="Bardial — inicio">
-        <span style="font-weight:600; letter-spacing:.28em;">BARDIAL</span>
-        <span style="font-size:12px; color:#aab5bf;">Bienes Raíces</span>
+      <a href="index.php#inicio" class="flex items-center" aria-label="Bardial — inicio">
+        <img class="site-logo site-logo--footer" src="assets/images/logo-curvas-01.png" alt="Bardial"/>
       </a>
 
       <nav class="flex flex-wrap gap-6" style="font-size:12px; color:#c5cdd3;" aria-label="Enlaces del pie">

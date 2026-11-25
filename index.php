@@ -18,23 +18,23 @@ $catalogProperties = bardial_with_categories($properties);
     <div class="pointer-events-none absolute rounded-full" style="width:256px;height:256px;left:-40px;top:224px;border:1px solid rgba(199,168,106,.2);"></div>
 
     <div class="container-bardial grid grid-cols-1 lg:grid-cols-[0.93fr_1.07fr] gap-12 items-center py-12">
-      <div class="relative z-10 max-w-[672px] py-8 lg:py-20">
-        <p class="eyebrow-inline">Patrimonio que se siente hogar</p>
-        <h1 class="font-display" style="font-size:clamp(3.7rem,7vw,7rem);line-height:.88;letter-spacing:-.045em;color:var(--color-navy);">
+      <div class="reveal-group relative z-10 max-w-[672px] py-8 lg:py-20">
+        <p class="eyebrow-inline reveal">Patrimonio que se siente hogar</p>
+        <h1 class="font-display reveal" style="font-size:clamp(3.7rem,7vw,7rem);line-height:.88;letter-spacing:-.045em;color:var(--color-navy);">
           Espacios para
           <em class="block mt-2" style="color:var(--color-gold);font-style:italic;">vivir y crecer.</em>
         </h1>
-        <p class="mt-8 text-base md:text-lg leading-7" style="max-width:512px;color:var(--color-gray-1);">
+        <p class="reveal mt-8 text-base md:text-lg leading-7" style="max-width:512px;color:var(--color-gray-1);">
           Encontramos el lugar que acompaña tu historia. Casas residenciales, bodegas, locales comerciales y departamentos elegidos con atención y propósito.
         </p>
-        <div class="mt-10 flex flex-wrap gap-4">
+        <div class="reveal mt-10 flex flex-wrap gap-4">
           <a href="#propiedades" class="btn-primary-pill">
             Explorar propiedades
             <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
           </a>
           <a href="#servicios" class="btn-ghost-underline">Conoce nuestro enfoque</a>
         </div>
-        <div class="mt-14 flex flex-wrap gap-10 sm:gap-16 pt-7 border-t" style="border-color:var(--color-beige-border-3);">
+        <div class="reveal mt-14 flex flex-wrap gap-10 sm:gap-16 pt-7 border-t" style="border-color:var(--color-beige-border-3);">
           <div><p class="font-display text-[30px]" style="color:var(--color-navy);">12+</p><p class="text-xs mt-1" style="color:var(--color-gray-5);">Años de experiencia</p></div>
           <div><p class="font-display text-[30px]" style="color:var(--color-navy);">460</p><p class="text-xs mt-1" style="color:var(--color-gray-5);">Operaciones exitosas</p></div>
           <div><p class="font-display text-[30px]" style="color:var(--color-navy);">98%</p><p class="text-xs mt-1" style="color:var(--color-gray-5);">Clientes satisfechos</p></div>
@@ -42,11 +42,11 @@ $catalogProperties = bardial_with_categories($properties);
       </div>
 
       <div class="relative min-h-[520px] lg:min-h-[700px]">
-        <div class="hero-arch absolute inset-0 overflow-hidden">
+        <div class="hero-arch reveal reveal--arch absolute inset-0 overflow-hidden">
           <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;q=82&amp;w=1800" alt="Casa contemporánea de concreto claro rodeada de vegetación" class="w-full h-full object-cover"/>
           <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(7,24,39,.35) 0%, transparent 50%, rgba(247,244,237,.05) 100%);"></div>
         </div>
-        <div class="absolute -bottom-6 -left-4 sm:-left-8 flex items-center gap-4 p-4 pr-6 rounded-2xl" style="background:rgba(247,244,237,.95);backdrop-filter:blur(4px);box-shadow:0 20px 50px rgba(43,55,47,.14);">
+        <div class="reveal absolute -bottom-6 -left-4 sm:-left-8 flex items-center gap-4 p-4 pr-6 rounded-2xl" style="--reveal-delay:360ms;background:rgba(247,244,237,.95);backdrop-filter:blur(4px);box-shadow:0 20px 50px rgba(43,55,47,.14);">
           <div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style="background:var(--color-beige-icon);">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 15h9v-2h-2v-2h-2v2h-2m-3 2V9l2-2"/></svg>
           </div>
@@ -67,26 +67,26 @@ $catalogProperties = bardial_with_categories($properties);
   <!-- ==================== PROPIEDADES DESTACADAS ==================== -->
   <section id="propiedades" style="background:var(--color-cream-alt);padding:96px 0;">
     <div class="container-bardial">
-      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-        <div>
+      <div class="reveal-group flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+        <div class="reveal">
           <p class="eyebrow">Selección Bardial</p>
           <h2 class="section-title mt-5">Propiedades <em class="block" style="color:var(--color-gold);font-style:italic;">destacadas</em></h2>
         </div>
-        <p class="max-w-[448px] text-sm leading-6" style="color:var(--color-gray-2);">Una colección cuidada de espacios con ubicación, arquitectura y valor a largo plazo.</p>
+        <p class="reveal max-w-[448px] text-sm leading-6" style="color:var(--color-gray-2);">Una colección cuidada de espacios con ubicación, arquitectura y valor a largo plazo.</p>
       </div>
 
-      <div class="mt-10 flex flex-wrap gap-x-8 gap-y-3 py-4 border-t border-b" style="border-color:var(--color-beige-border);">
+      <div class="reveal-group mt-10 flex flex-wrap gap-x-8 gap-y-3 py-4 border-t border-b" style="border-color:var(--color-beige-border);">
         <?php foreach ($categories as $cat): ?>
-          <button type="button" class="cat-bar-btn flex items-center gap-2 text-xs uppercase" style="letter-spacing:.16em;color:#6c7379;" data-open-catalog="<?php echo htmlspecialchars($cat); ?>" aria-haspopup="dialog">
+          <button type="button" class="cat-bar-btn reveal flex items-center gap-2 text-xs uppercase" style="letter-spacing:.16em;color:#6c7379;" data-open-catalog="<?php echo htmlspecialchars($cat); ?>" aria-haspopup="dialog">
             <?php echo htmlspecialchars($cat); ?>
             <svg class="arrow-rotate" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
           </button>
         <?php endforeach; ?>
       </div>
 
-      <div class="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="reveal-group mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($destacadas as $i => $p): ?>
-          <a href="detalles.php?id=<?php echo (int)$p['id']; ?>" class="property-card group block <?php echo $i === 1 ? 'lg:translate-y-8' : ''; ?>">
+          <a href="detalles.php?id=<?php echo (int)$p['id']; ?>" class="property-card reveal group block <?php echo $i === 1 ? 'reveal--offset lg:translate-y-8' : ''; ?>">
             <div class="relative h-[380px] overflow-hidden rounded-2xl rounded-tr-[5rem]" style="background:#d8d1c5;">
               <img src="<?php echo htmlspecialchars($p['img']); ?>" alt="<?php echo htmlspecialchars($p['location']); ?>" class="property-img w-full h-full object-cover"/>
               <span class="card-label"><?php echo htmlspecialchars(bardial_category_for($p['type'] ?? '')); ?></span>
@@ -110,7 +110,7 @@ $catalogProperties = bardial_with_categories($properties);
         <?php endforeach; ?>
       </div>
 
-      <div class="mt-20 lg:mt-28 text-center">
+      <div class="reveal mt-20 lg:mt-28 text-center">
         <button type="button" class="inline-flex items-center gap-4 text-sm font-semibold pb-2 border-b" style="border-color:#a9803f;color:var(--color-navy);" data-open-catalog="Todas" aria-haspopup="dialog">
           Ver todas las propiedades
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
@@ -122,13 +122,13 @@ $catalogProperties = bardial_with_categories($properties);
   <!-- ==================== SERVICIOS ==================== -->
   <section id="servicios" style="padding:96px 0;">
     <div class="container-bardial grid grid-cols-1 lg:grid-cols-[0.75fr_1.25fr] gap-12">
-      <div>
+      <div class="reveal">
         <p class="eyebrow">Lo hacemos simple</p>
         <h2 class="section-title mt-5">Decisiones seguras,<em class="block" style="color:var(--color-gold);font-style:italic;">de principio a fin.</em></h2>
         <p class="mt-7 max-w-[384px] text-sm leading-7" style="color:var(--color-gray-3);">Más que inmuebles, construimos relaciones transparentes para que el proceso sea tan valioso como el resultado.</p>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 border-t" style="border-color:var(--color-beige-border-3);">
-        <div class="service-card">
+      <div class="reveal-group grid grid-cols-1 sm:grid-cols-2 border-t" style="border-color:var(--color-beige-border-3);">
+        <div class="service-card reveal">
           <div class="flex items-start justify-between">
             <span class="text-xs" style="color:var(--color-gray-10);">01</span>
             <svg class="service-icon" width="40" height="40" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="18" r="6"/><path d="M16 18h13v-3h-3v-3h-3v3h-3m-5 3V10l3-3"/></svg>
@@ -136,7 +136,7 @@ $catalogProperties = bardial_with_categories($properties);
           <h3 class="font-display text-[30px] mt-12" style="color:var(--color-navy);">Compra y venta</h3>
           <p class="mt-4 text-sm leading-6 max-w-[320px]" style="color:var(--color-gray-4);">Te acompañamos en cada paso para encontrar o colocar una propiedad con claridad y confianza.</p>
         </div>
-        <div class="service-card">
+        <div class="service-card reveal">
           <div class="flex items-start justify-between">
             <span class="text-xs" style="color:var(--color-gray-10);">02</span>
             <svg class="service-icon" width="40" height="40" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 28V9l11-5 11 5v19M5 28h22M11 14h3m4 0h3M11 19h3m4 0h3M11 24h3m4 0h3"/></svg>
@@ -144,7 +144,7 @@ $catalogProperties = bardial_with_categories($properties);
           <h3 class="font-display text-[30px] mt-12" style="color:var(--color-navy);">Renta de espacios</h3>
           <p class="mt-4 text-sm leading-6 max-w-[320px]" style="color:var(--color-gray-4);">Casas residenciales, bodegas, locales comerciales y departamentos seleccionados de acuerdo con tus necesidades.</p>
         </div>
-        <div class="service-card">
+        <div class="service-card reveal">
           <div class="flex items-start justify-between">
             <span class="text-xs" style="color:var(--color-gray-10);">03</span>
             <svg class="service-icon" width="40" height="40" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 28h22M9 28V18h4v10M15 28V10h4v18M21 28V14h4v14"/></svg>
@@ -152,7 +152,7 @@ $catalogProperties = bardial_with_categories($properties);
           <h3 class="font-display text-[30px] mt-12" style="color:var(--color-navy);">Valuación inmobiliaria</h3>
           <p class="mt-4 text-sm leading-6 max-w-[320px]" style="color:var(--color-gray-4);">Análisis preciso del mercado para definir el valor real y competitivo de tu inmueble.</p>
         </div>
-        <div class="service-card">
+        <div class="service-card reveal">
           <div class="flex items-start justify-between">
             <span class="text-xs" style="color:var(--color-gray-10);">04</span>
             <svg class="service-icon" width="40" height="40" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="16" r="12"/><path d="M20 12l-2.5 7.5L10 22l2.5-7.5L20 12z"/></svg>
@@ -167,7 +167,7 @@ $catalogProperties = bardial_with_categories($properties);
   <!-- ==================== QUIÉNES SOMOS ==================== -->
   <section id="nosotros" class="relative overflow-hidden" style="background:var(--color-navy-deep);color:var(--color-cream);">
     <div class="grid grid-cols-1 lg:grid-cols-2 mx-auto" style="max-width:var(--container-max);">
-      <div class="relative min-h-[500px] lg:min-h-[720px]">
+      <div class="reveal reveal--arch relative min-h-[500px] lg:min-h-[720px]">
         <img src="https://images.unsplash.com/photo-1558661091-5cc1b64d0dc5?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;q=82&amp;w=1200" alt="Detalle arquitectónico de una residencia contemporánea" class="absolute inset-0 w-full h-full object-cover opacity-80"/>
         <div class="absolute inset-0" style="background:rgba(9,30,49,.2);"></div>
         <div class="absolute bottom-8 left-8 max-w-[220px] rounded-xl p-5" style="background:#f7f1e5;color:var(--color-navy-footer);">
@@ -175,7 +175,7 @@ $catalogProperties = bardial_with_categories($properties);
           <p class="text-sm leading-6 -mt-3">Cada espacio tiene una historia. Nuestra labor es ayudarte a encontrar la tuya.</p>
         </div>
       </div>
-      <div class="relative flex flex-col justify-center px-6 py-20 lg:px-20 lg:py-24">
+      <div class="reveal relative flex flex-col justify-center px-6 py-20 lg:px-20 lg:py-24">
         <svg class="absolute -right-20 top-10 w-[288px] h-[288px] pointer-events-none" viewBox="0 0 280 280" fill="none" stroke="#fff" stroke-opacity=".1" aria-hidden="true"><circle cx="140" cy="140" r="100"/><circle cx="140" cy="140" r="135"/></svg>
         <div class="relative max-w-[576px]">
           <p class="text-[11.2px] font-semibold uppercase" style="letter-spacing:.26em;color:var(--color-gold-eyebrow-dark);">Quiénes somos</p>
@@ -199,7 +199,7 @@ $catalogProperties = bardial_with_categories($properties);
     <div class="pointer-events-none absolute rounded-full" style="width:384px;height:384px;bottom:-96px;right:-64px;border:1px solid rgba(193,163,103,.25);"></div>
     <div class="relative mx-auto" style="max-width:1200px;padding:0 24px;">
       <div class="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-16">
-        <div>
+        <div class="reveal">
           <p class="eyebrow">Hablemos</p>
           <h2 class="section-title mt-5">Tu próximo espacio comienza aquí.</h2>
           <p class="mt-7 max-w-[384px] text-sm leading-7" style="color:var(--color-gray-2);">Cuéntanos qué estás buscando. Uno de nuestros asesores se pondrá en contacto contigo.</p>
@@ -209,7 +209,7 @@ $catalogProperties = bardial_with_categories($properties);
             <div><p class="text-xs" style="color:var(--color-gray-9);">Oficina</p><p class="mt-1 font-medium" style="color:var(--color-navy);">Ciudad de México, México</p></div>
           </div>
         </div>
-        <form id="contactForm" class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8">
+        <form id="contactForm" class="reveal grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8" style="--reveal-delay:120ms;">
           <div>
             <label class="form-label" for="cf-name">Nombre completo</label>
             <input class="input-line" id="cf-name" name="name" type="text" placeholder="Escribe tu nombre" required/>

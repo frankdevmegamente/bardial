@@ -20,7 +20,7 @@ $hasVideo = !empty($property['video']);
 <main class="flex-grow">
   <div class="container-bardial pt-32 pb-24">
 
-    <nav class="flex items-center gap-2 mb-8 text-xs" style="color:var(--color-gray-6);" aria-label="Ruta de navegación">
+    <nav class="reveal flex items-center gap-2 mb-8 text-xs" style="color:var(--color-gray-6);" aria-label="Ruta de navegación">
       <a class="hover:text-[var(--color-gold-text)] transition-colors" href="index.php">Inicio</a>
       <span class="text-[10px]">›</span>
       <a class="hover:text-[var(--color-gold-text)] transition-colors" href="catalogo.php">Propiedades</a>
@@ -30,7 +30,7 @@ $hasVideo = !empty($property['video']);
 
     <!-- Galería -->
     <section class="mb-12">
-      <div class="collage rounded-2xl overflow-hidden" style="background:#d8d1c5;">
+      <div class="collage reveal reveal--arch rounded-2xl overflow-hidden" style="background:#d8d1c5;">
         <?php
         $totalImages = count($galleryImages);
         $displayLimit = 6;
@@ -81,7 +81,7 @@ $hasVideo = !empty($property['video']);
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 relative">
       <div class="lg:col-span-8 space-y-16 min-w-0">
 
-        <section>
+        <section class="reveal">
           <p class="eyebrow"><?php echo htmlspecialchars($property['city'] ?: 'Propiedad exclusiva'); ?></p>
           <h1 class="font-display mt-5" style="font-size:clamp(2.6rem,5vw,4.4rem);line-height:1;letter-spacing:-.04em;color:var(--color-navy);"><?php echo htmlspecialchars($property['location']); ?></h1>
           <?php if (!empty($property['type'])): ?>
@@ -95,13 +95,13 @@ $hasVideo = !empty($property['video']);
         </section>
 
         <?php if (!empty($property['description'])): ?>
-          <section>
+          <section class="reveal">
             <h2 class="font-display text-[30px]" style="color:var(--color-navy);">Descripción</h2>
             <p class="mt-5 text-base leading-8" style="color:var(--color-gray-4);"><?php echo nl2br(htmlspecialchars($property['description'])); ?></p>
           </section>
         <?php endif; ?>
 
-        <section>
+        <section class="reveal">
           <h2 class="font-display text-[30px]" style="color:var(--color-navy);">Servicios y amenidades</h2>
           <?php
           $serviceIcons = [
@@ -148,7 +148,7 @@ $hasVideo = !empty($property['video']);
           <?php endif; ?>
         </section>
 
-        <section>
+        <section class="reveal">
           <h2 class="font-display text-[30px]" style="color:var(--color-navy);">Ubicación</h2>
           <div class="h-[400px] mt-6 rounded-2xl overflow-hidden border" style="border-color:var(--color-beige-border);">
             <iframe class="w-full h-full" src="https://maps.google.com/maps?q=<?php echo urlencode($property['location']); ?>+Mexico&amp;output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -157,7 +157,7 @@ $hasVideo = !empty($property['video']);
       </div>
 
       <aside class="lg:col-span-4">
-        <div class="sticky-sidebar rounded-2xl border p-8" style="background:var(--color-cream);border-color:var(--color-beige-border);box-shadow:0 20px 50px -20px rgba(9,29,48,.18);">
+        <div class="sticky-sidebar reveal rounded-2xl border p-8" style="--reveal-delay:120ms;background:var(--color-cream);border-color:var(--color-beige-border);box-shadow:0 20px 50px -20px rgba(9,29,48,.18);">
           <p class="form-label">Precio</p>
           <p class="font-display text-[36px] mt-1" style="color:var(--color-gold-text);"><?php echo htmlspecialchars($property['price']); ?></p>
 
@@ -203,18 +203,18 @@ $hasVideo = !empty($property['video']);
     </div>
 
     <section class="mt-24">
-      <div class="flex flex-wrap justify-between items-end gap-6 mb-10">
+      <div class="reveal flex flex-wrap justify-between items-end gap-6 mb-10">
         <div>
           <p class="eyebrow">Sigue explorando</p>
           <h2 class="font-display text-[38px] mt-4" style="color:var(--color-navy);">Propiedades similares</h2>
         </div>
         <a class="text-sm font-medium pb-1 border-b" style="color:var(--color-navy);border-color:var(--color-gold-line);" href="catalogo.php">Ver todas las propiedades</a>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="reveal-group grid grid-cols-1 md:grid-cols-3 gap-6">
         <?php $similares = array_filter($properties, function($sp) use ($propId) { return $sp['id'] !== $propId; }); ?>
         <?php $similares = array_slice(array_values($similares), 0, 3); ?>
         <?php foreach ($similares as $sp): ?>
-          <a href="detalles.php?id=<?php echo (int)$sp['id']; ?>" class="property-card group block">
+          <a href="detalles.php?id=<?php echo (int)$sp['id']; ?>" class="property-card reveal group block">
             <div class="relative h-[260px] overflow-hidden rounded-2xl rounded-tr-[5rem]" style="background:#d8d1c5;">
               <img class="property-img w-full h-full object-cover" src="<?php echo htmlspecialchars($sp['img']); ?>" alt="<?php echo htmlspecialchars($sp['location']); ?>"/>
               <span class="card-label"><?php echo htmlspecialchars(bardial_category_for($sp['type'] ?? '')); ?></span>

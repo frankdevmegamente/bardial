@@ -237,3 +237,86 @@
   letter-spacing: 0.15em;
   border-radius: 9999px;
 }
+
+/* Logo oficial */
+.site-logo {
+  display: block;
+  height: 56px;
+  width: auto;
+}
+.site-logo--footer { height: 68px; }
+@media (max-width: 640px) {
+  .site-logo { height: 46px; }
+  .site-logo--footer { height: 56px; }
+}
+
+/* Header visible desde el inicio */
+.site-header {
+  background: rgba(247, 244, 237, .94);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 34px -24px rgba(9, 29, 48, .55);
+}
+
+/* Reveal on scroll */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 900ms cubic-bezier(.2, .7, .2, 1), transform 900ms cubic-bezier(.2, .7, .2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js .reveal.is-visible { opacity: 1; transform: none; }
+
+/* El clip se aplica a la imagen, nunca al contenedor que observa el IntersectionObserver */
+.js .reveal--arch > img {
+  clip-path: inset(100% 0 0 0);
+  transform: scale(1.04);
+  transition: clip-path 900ms cubic-bezier(.2, .7, .2, 1), transform 900ms cubic-bezier(.2, .7, .2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js .reveal--arch.is-visible > img { clip-path: inset(0 0 0 0); transform: none; }
+
+.js .reveal--line {
+  opacity: 1;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 900ms cubic-bezier(.2, .7, .2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js .reveal--line.is-visible { transform: scaleX(1); }
+
+/* Stagger para hijos directos */
+.js .reveal-group > .reveal:nth-child(2) { --reveal-delay: 110ms; }
+.js .reveal-group > .reveal:nth-child(3) { --reveal-delay: 220ms; }
+.js .reveal-group > .reveal:nth-child(4) { --reveal-delay: 330ms; }
+.js .reveal-group > .reveal:nth-child(5) { --reveal-delay: 440ms; }
+.js .reveal-group > .reveal:nth-child(6) { --reveal-delay: 550ms; }
+
+/* Tarjeta central del grid destacado (mantiene su desplazamiento) */
+@media (min-width: 1024px) {
+  .js .reveal--offset.is-visible { transform: translateY(32px); }
+}
+
+/* Apertura del modal */
+.modal-catalog[open] { animation: modalIn 280ms cubic-bezier(.2, .7, .2, 1); }
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(12px) scale(.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal,
+  .js .reveal.is-visible,
+  .js .reveal--arch,
+  .js .reveal--arch.is-visible,
+  .js .reveal--arch > img,
+  .js .reveal--arch.is-visible > img,
+  .js .reveal--line,
+  .js .reveal--line.is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+  .site-header { transition: none !important; }
+}

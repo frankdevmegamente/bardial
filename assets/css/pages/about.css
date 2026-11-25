@@ -2,8 +2,7 @@
 
 main .about-hero {
   min-height: 640px;
-  background-size: cover;
-  background-position: center;
+  background: var(--color-navy-deep);
 }
 @media (min-width: 768px) { main .about-hero { min-height: 760px; } }
 
@@ -148,6 +147,12 @@ main .about-value-card:hover {
 @media (min-width: 768px) {
   main .about-value-card--raised { transform: translateY(-32px); }
   main .about-value-card--raised:hover { transform: translateY(-36px); }
+}
+/* El reveal no debe anular el hover ni la tarjeta elevada */
+main .about-value-card.reveal.is-visible:hover { transform: translateY(-4px); }
+@media (min-width: 768px) {
+  main .about-value-card--raised.reveal.is-visible { transform: translateY(-32px); }
+  main .about-value-card--raised.reveal.is-visible:hover { transform: translateY(-36px); }
 }
 main .about-value-icon {
   width: 60px;

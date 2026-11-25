@@ -85,48 +85,4 @@ main .contact-note {
   line-height: 1.8;
 }
 
-main .contact-office {
-  background: var(--color-cream);
-  border: 1px solid var(--color-beige-border);
-  transition: box-shadow 250ms, transform 250ms;
-}
-main .contact-office:hover { box-shadow: 0 24px 50px -28px rgba(9, 29, 48, .3); transform: translateY(-4px); }
-main .contact-office img { transition: transform 700ms; }
-main .contact-office:hover img { transform: scale(1.05); }
-main .contact-office-tag {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  padding: 8px 14px;
-  border-radius: 9999px;
-  background: rgba(247, 244, 237, .92);
-  color: var(--color-gold-text);
-  font-size: .65rem;
-  font-weight: 600;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-}
-main .contact-office-title {
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  color: var(--color-navy);
-}
-main .contact-office-address {
-  margin-top: 8px;
-  color: var(--color-gray-4);
-  font-size: .875rem;
-  line-height: 1.7;
-}
-main .contact-office-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid var(--color-gold-line);
-  color: var(--color-navy);
-  font-size: .8rem;
-  font-weight: 600;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
-main .contact-office-link:hover { color: var(--color-gold-text); }
+

@@ -74,7 +74,7 @@ include 'includes/header.php';
 <main class="flex-grow">
   <div class="container-bardial pt-32 pb-24">
 
-    <nav class="flex items-center gap-2 mb-10 text-xs" style="color:var(--color-gray-6);" aria-label="Ruta de navegación">
+    <nav class="reveal flex items-center gap-2 mb-10 text-xs" style="color:var(--color-gray-6);" aria-label="Ruta de navegación">
       <a class="hover:text-[var(--color-gold-text)] transition-colors" href="index.php">Inicio</a>
       <span class="text-[10px]">›</span>
       <a class="hover:text-[var(--color-gold-text)] transition-colors" href="catalogo.php">Propiedades</a>
@@ -82,14 +82,14 @@ include 'includes/header.php';
       <span style="color:var(--color-navy);">Listados exclusivos</span>
     </nav>
 
-    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14">
-      <div>
+    <div class="reveal-group flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14">
+      <div class="reveal">
         <p class="eyebrow">Colección Bardial</p>
         <h1 class="section-title mt-5">Propiedades</h1>
         <p class="mt-4 text-sm font-medium" style="color:var(--color-gold-text);" role="status"><?php echo $totalProps; ?> propiedades encontradas</p>
         <p class="mt-2 max-w-[448px] text-sm leading-6" style="color:var(--color-gray-2);">Oportunidades de inversión de lujo en los destinos más exclusivos de México.</p>
       </div>
-      <div class="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 w-full lg:w-auto">
+      <div class="reveal flex flex-col sm:flex-row items-stretch sm:items-end gap-4 w-full lg:w-auto">
         <form method="get" action="" id="searchContainer" class="relative flex-1 lg:w-72">
           <label class="form-label" for="searchInput">Buscar por ubicación</label>
           <div class="flex items-center gap-2">
@@ -117,11 +117,11 @@ include 'includes/header.php';
     </div>
 
     <?php if ($searchQuery): ?>
-      <p class="mb-8 text-sm" style="color:var(--color-gray-2);" role="status"><?php echo $totalProps; ?> resultado<?php echo $totalProps === 1 ? '' : 's'; ?> para “<?php echo htmlspecialchars($searchQuery); ?>”</p>
+      <p class="reveal mb-8 text-sm" style="color:var(--color-gray-2);" role="status"><?php echo $totalProps; ?> resultado<?php echo $totalProps === 1 ? '' : 's'; ?> para “<?php echo htmlspecialchars($searchQuery); ?>”</p>
     <?php endif; ?>
 
     <div class="flex flex-col lg:flex-row gap-12">
-      <aside class="w-full lg:w-[300px] flex-shrink-0">
+      <aside class="reveal w-full lg:w-[300px] flex-shrink-0">
         <form method="get" action="" class="space-y-10">
           <?php foreach ($_GET as $k => $v): if ($k === 'type' || $k === 'price_min' || $k === 'price_max' || $k === 'bed' || $k === 'sqm_min' || $k === 'sqm_max' || $k === 'services' || $k === 'page') continue; if (is_array($v)): foreach ($v as $vv): ?><input name="<?php echo htmlspecialchars($k); ?>[]" type="hidden" value="<?php echo htmlspecialchars($vv); ?>"><?php endforeach; else: ?><input name="<?php echo htmlspecialchars($k); ?>" type="hidden" value="<?php echo htmlspecialchars($v); ?>"><?php endif; endforeach; ?>
 
@@ -189,9 +189,9 @@ include 'includes/header.php';
       </aside>
 
       <div class="flex-1 min-w-0">
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div class="reveal-group grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           <?php foreach ($pageProperties as $p): ?>
-            <a href="detalles.php?id=<?php echo (int)$p['id']; ?>" class="property-card group block <?php echo !empty($p['sold']) ? 'opacity-80' : ''; ?>">
+            <a href="detalles.php?id=<?php echo (int)$p['id']; ?>" class="property-card reveal group block <?php echo !empty($p['sold']) ? 'opacity-80' : ''; ?>">
               <div class="relative h-[300px] overflow-hidden rounded-2xl rounded-tr-[5rem]" style="background:#d8d1c5;">
                 <img src="<?php echo htmlspecialchars($p['img']); ?>" alt="<?php echo htmlspecialchars($p['location']); ?>" class="property-img w-full h-full object-cover"/>
                 <span class="card-label"><?php echo htmlspecialchars(bardial_category_for($p['type'] ?? '')); ?></span>
@@ -227,7 +227,7 @@ include 'includes/header.php';
         </div>
 
         <?php if ($totalProps === 0): ?>
-          <div class="empty-state mt-6">
+          <div class="empty-state reveal mt-6">
             <h3 class="font-display text-[30px]" style="color:var(--color-navy);">Sin resultados</h3>
             <p class="mt-4 text-sm leading-7" style="color:var(--color-gray-2);">No encontramos propiedades con esos filtros. Prueba con otros criterios.</p>
             <a class="btn-primary-pill mt-8" href="catalogo.php">Ver todas las propiedades</a>
@@ -236,7 +236,7 @@ include 'includes/header.php';
 
         <?php if ($totalPages > 1): ?>
           <?php $prevPage = max(1, $page - 1); $nextPage = min($totalPages, $page + 1); $prevDisabled = $page <= 1; $nextDisabled = $page >= $totalPages; $filterParams = $_GET; unset($filterParams['page']); $queryString = $filterParams ? '&amp;' . htmlspecialchars(http_build_query($filterParams)) : ''; ?>
-          <nav class="mt-20 flex flex-wrap justify-center items-center gap-3" aria-label="Paginación">
+          <nav class="reveal mt-20 flex flex-wrap justify-center items-center gap-3" aria-label="Paginación">
             <a class="pagination-btn <?php echo $prevDisabled ? 'pointer-events-none opacity-30' : ''; ?>" href="?page=<?php echo $prevPage . $queryString; ?>" aria-label="Página anterior" <?php echo $prevDisabled ? 'aria-disabled="true" tabindex="-1"' : ''; ?>>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
             </a>
