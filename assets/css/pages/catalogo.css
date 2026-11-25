@@ -46,4 +46,4 @@
   transition: all 160ms;
 }
 .pagination-btn:hover { border-color: var(--color-gold); background: var(--color-beige-icon); }
-.pagination-btn.active { background: var(--color-navy-deep); border-color: var(--color-navy-deep); color: var(--color-cream); }
+.pagination-btn.active { background: var(--color-navy-deep); border-color: var(--color-navy-deep); color: var(--fg-on-dark); }

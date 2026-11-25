@@ -1,7 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<script>document.documentElement.classList.add('js');</script>
+<script>
+(function () {
+  document.documentElement.classList.add('js');
+  var theme = 'light';
+  try {
+    var saved = localStorage.getItem('bardial-theme');
+    if (saved === 'dark' || saved === 'light') {
+      theme = saved;
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    }
+  } catch (e) {}
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title><?php echo $pageTitle ?? 'Bardial Inmobiliaria'; ?></title>

@@ -90,7 +90,7 @@
   </section>
 
   <!-- Cierre -->
-  <section class="py-20 md:py-24" style="background:var(--color-navy);">
+  <section class="py-20 md:py-24" style="background:var(--color-navy-deep);">
     <div class="reveal container-bardial flex flex-col md:flex-row items-center justify-between gap-8">
       <div>
         <p class="about-cta-eyebrow">Hablemos</p>

@@ -77,7 +77,7 @@ $catalogProperties = bardial_with_categories($properties);
 
       <div class="reveal-group mt-10 flex flex-wrap gap-x-8 gap-y-3 py-4 border-t border-b" style="border-color:var(--color-beige-border);">
         <?php foreach ($categories as $cat): ?>
-          <button type="button" class="cat-bar-btn reveal flex items-center gap-2 text-xs uppercase" style="letter-spacing:.16em;color:#6c7379;" data-open-catalog="<?php echo htmlspecialchars($cat); ?>" aria-haspopup="dialog">
+          <button type="button" class="cat-bar-btn reveal flex items-center gap-2 text-xs uppercase" style="letter-spacing:.16em;color:var(--color-gray-2);" data-open-catalog="<?php echo htmlspecialchars($cat); ?>" aria-haspopup="dialog">
             <?php echo htmlspecialchars($cat); ?>
             <svg class="arrow-rotate" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
           </button>
@@ -87,7 +87,7 @@ $catalogProperties = bardial_with_categories($properties);
       <div class="reveal-group mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($destacadas as $i => $p): ?>
           <a href="detalles.php?id=<?php echo (int)$p['id']; ?>" class="property-card reveal group block <?php echo $i === 1 ? 'reveal--offset lg:translate-y-8' : ''; ?>">
-            <div class="relative h-[380px] overflow-hidden rounded-2xl rounded-tr-[5rem]" style="background:#d8d1c5;">
+            <div class="relative h-[380px] overflow-hidden rounded-2xl rounded-tr-[5rem]" style="background:var(--color-beige-icon);">
               <img src="<?php echo htmlspecialchars($p['img']); ?>" alt="<?php echo htmlspecialchars($p['location']); ?>" class="property-img w-full h-full object-cover"/>
               <span class="card-label"><?php echo htmlspecialchars(bardial_category_for($p['type'] ?? '')); ?></span>
               <span class="card-btn absolute bottom-5 right-5">
@@ -111,7 +111,7 @@ $catalogProperties = bardial_with_categories($properties);
       </div>
 
       <div class="reveal mt-20 lg:mt-28 text-center">
-        <button type="button" class="inline-flex items-center gap-4 text-sm font-semibold pb-2 border-b" style="border-color:#a9803f;color:var(--color-navy);" data-open-catalog="Todas" aria-haspopup="dialog">
+        <button type="button" class="inline-flex items-center gap-4 text-sm font-semibold pb-2 border-b" style="border-color:var(--color-gold-text);color:var(--color-navy);" data-open-catalog="Todas" aria-haspopup="dialog">
           Ver todas las propiedades
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
         </button>
@@ -165,7 +165,7 @@ $catalogProperties = bardial_with_categories($properties);
   </section>
 
   <!-- ==================== QUIÉNES SOMOS ==================== -->
-  <section id="nosotros" class="relative overflow-hidden" style="background:var(--color-navy-deep);color:var(--color-cream);">
+  <section id="nosotros" class="relative overflow-hidden" style="background:var(--color-navy-deep);color:var(--fg-on-dark);">
     <div class="grid grid-cols-1 lg:grid-cols-2 mx-auto" style="max-width:var(--container-max);">
       <div class="reveal reveal--arch relative min-h-[500px] lg:min-h-[720px]">
         <img src="https://images.unsplash.com/photo-1558661091-5cc1b64d0dc5?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;q=82&amp;w=1200" alt="Detalle arquitectónico de una residencia contemporánea" class="absolute inset-0 w-full h-full object-cover opacity-80"/>

@@ -30,7 +30,7 @@ $hasVideo = !empty($property['video']);
 
     <!-- Galería -->
     <section class="mb-12">
-      <div class="collage reveal reveal--arch rounded-2xl overflow-hidden" style="background:#d8d1c5;">
+      <div class="collage reveal reveal--arch rounded-2xl overflow-hidden" style="background:var(--color-beige-icon);">
         <?php
         $totalImages = count($galleryImages);
         $displayLimit = 6;
@@ -62,7 +62,7 @@ $hasVideo = !empty($property['video']);
               </div>
             </div>
             <div class="absolute bottom-3 left-3 z-20">
-              <span class="text-[10px] uppercase px-2 py-1 tracking-wider rounded-full" style="background:var(--color-navy);color:#fff;">Video tour</span>
+              <span class="text-[10px] uppercase px-2 py-1 tracking-wider rounded-full" style="background:var(--surface-dark-accent);color:#fff;">Video tour</span>
             </div>
           </div>
         <?php endif; ?>
@@ -215,7 +215,7 @@ $hasVideo = !empty($property['video']);
         <?php $similares = array_slice(array_values($similares), 0, 3); ?>
         <?php foreach ($similares as $sp): ?>
           <a href="detalles.php?id=<?php echo (int)$sp['id']; ?>" class="property-card reveal group block">
-            <div class="relative h-[260px] overflow-hidden rounded-2xl rounded-tr-[5rem]" style="background:#d8d1c5;">
+            <div class="relative h-[260px] overflow-hidden rounded-2xl rounded-tr-[5rem]" style="background:var(--color-beige-icon);">
               <img class="property-img w-full h-full object-cover" src="<?php echo htmlspecialchars($sp['img']); ?>" alt="<?php echo htmlspecialchars($sp['location']); ?>"/>
               <span class="card-label"><?php echo htmlspecialchars(bardial_category_for($sp['type'] ?? '')); ?></span>
               <span class="card-btn absolute bottom-5 right-5"><svg class="arrow-rotate" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>

@@ -45,7 +45,7 @@ main .contact-detail-icon {
   color: var(--color-gold-icon);
   transition: background 200ms, color 200ms;
 }
-main .contact-detail:hover .contact-detail-icon { background: var(--color-navy); color: #fff; }
+main .contact-detail:hover .contact-detail-icon { background: var(--surface-dark-accent); color: #fff; }
 main .contact-detail-label {
   display: block;
   color: var(--color-gray-6);
@@ -73,7 +73,7 @@ main .contact-social {
   color: var(--color-navy);
   transition: background 200ms, color 200ms, border-color 200ms;
 }
-main .contact-social:hover { background: var(--color-navy); border-color: var(--color-navy); color: #fff; }
+main .contact-social:hover { background: var(--surface-dark-accent); border-color: var(--surface-dark-accent); color: #fff; }
 
 main .contact-note {
   margin-top: 40px;

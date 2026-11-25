@@ -192,10 +192,10 @@ include 'includes/header.php';
         <div class="reveal-group grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           <?php foreach ($pageProperties as $p): ?>
             <a href="detalles.php?id=<?php echo (int)$p['id']; ?>" class="property-card reveal group block <?php echo !empty($p['sold']) ? 'opacity-80' : ''; ?>">
-              <div class="relative h-[300px] overflow-hidden rounded-2xl rounded-tr-[5rem]" style="background:#d8d1c5;">
+              <div class="relative h-[300px] overflow-hidden rounded-2xl rounded-tr-[5rem]" style="background:var(--color-beige-icon);">
                 <img src="<?php echo htmlspecialchars($p['img']); ?>" alt="<?php echo htmlspecialchars($p['location']); ?>" class="property-img w-full h-full object-cover"/>
                 <span class="card-label"><?php echo htmlspecialchars(bardial_category_for($p['type'] ?? '')); ?></span>
-                <?php if (!empty($p['sold'])): ?><span class="card-label !top-auto !bottom-5 !left-5" style="background:var(--color-navy);color:#fff;">Vendida</span><?php endif; ?>
+                <?php if (!empty($p['sold'])): ?><span class="card-label !top-auto !bottom-5 !left-5" style="background:var(--surface-dark-accent);color:#fff;">Vendida</span><?php endif; ?>
                 <?php if (!empty($p['video'])): ?>
                   <span class="absolute bottom-5 left-5 flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] uppercase tracking-wider" style="background:rgba(9,29,48,.75);color:#fff;"><span class="fill-icon material-symbols-outlined text-[15px]">play_circle</span> Video tour</span>
                 <?php endif; ?>

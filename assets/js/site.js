@@ -25,6 +25,37 @@
       });
     }
 
+    // Tema claro / oscuro (guarda la elección del usuario).
+    var themeBtn = document.getElementById('themeToggle');
+    if (themeBtn) {
+      var syncThemeButton = function () {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        var label = dark ? 'Activar modo claro' : 'Activar modo oscuro';
+        themeBtn.setAttribute('aria-pressed', String(dark));
+        themeBtn.setAttribute('aria-label', label);
+        themeBtn.setAttribute('title', label);
+      };
+      syncThemeButton();
+      themeBtn.addEventListener('click', function () {
+        var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        try { localStorage.setItem('bardial-theme', next); } catch (e) {}
+        syncThemeButton();
+      });
+
+      // Si no hay preferencia guardada, sigue los cambios del sistema.
+      var systemTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+      if (systemTheme && systemTheme.addEventListener) {
+        systemTheme.addEventListener('change', function (e) {
+          try {
+            if (localStorage.getItem('bardial-theme')) return;
+          } catch (err) {}
+          document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+          syncThemeButton();
+        });
+      }
+    }
+
     var observer = new MutationObserver(function () {
       var open = document.querySelector('dialog[open]');
       document.body.classList.toggle('dialog-open', !!open);
