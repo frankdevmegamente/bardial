@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist Expediente de Propiedad - Bardial Inmobiliaria</title>
+    <!-- Librería html2pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --dark-blue: #0a1c27; /* Color exacto extraído del logo */
+            --gold: #e5b022;
+            --white: #ffffff;
+            --gray-bg: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--gray-bg);
+            color: var(--text-dark);
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* HOJA TAMAÑO CARTA (LETTER) INDEPENDIENTE Y PERFECTAMENTE PROPORCIONADA */
+        .carta-sheet {
+            background-color: var(--white);
+            width: 794px;
+            height: 1024px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        /* ENCABEZADO CORPORATIVO CON LOGO Y CAMPOS */
+        .header {
+            background-color: var(--dark-blue);
+            padding: 24px 40px 20px 40px;
+            border-bottom: 4px solid var(--gold);
+            text-align: center;
+        }
+
+        .header img {
+            height: 75px;
+            width: auto;
+            display: block;
+            margin: 0 auto 16px auto;
+        }
+
+        /* CAMPOS RELLENABLES (Nombre de la Casa y Dirección) */
+        .inputs-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 680px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .field-group label {
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .field-group input {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(229, 176, 34, 0.5);
+            border-radius: 4px;
+            padding: 7px 12px;
+            color: #ffffff;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .field-group input:focus {
+            border-color: var(--gold);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .field-group input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        /* TEXTO SUSTITUTO PARA EL PDF DE MÁXIMA CALIDAD */
+        .pdf-value-text {
+            display: none;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--gold);
+            min-height: 24px;
+        }
+
+        /* CUERPO DEL CHECKLIST */
+        .main-content {
+            padding: 22px 45px 25px 45px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title-box {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .title-box h1 {
+            color: var(--dark-blue);
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 4px;
+        }
+
+        /* LISTA DE CONCEPTOS */
+        .checklist-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .item-card {
+            display: flex;
+            align-items: center;
+            padding: 9px 15px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 5px solid var(--dark-blue);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .item-card:hover {
+            background-color: #f1f5f9;
+            border-left-color: var(--gold);
+        }
+
+        .item-card input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 14px;
+            cursor: pointer;
+            accent-color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .item-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-text strong {
+            font-size: 13.5px;
+            color: var(--dark-blue);
+            line-height: 1.25;
+        }
+
+        /* BOTÓN DE DESCARGA: UBICADO FUERA DE LA HOJA IMPRESA */
+        .btn-container {
+            margin-top: 25px;
+            margin-bottom: 12px;
+            text-align: center;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            background-color: var(--gold);
+            color: var(--dark-blue);
+            border: none;
+            padding: 14px 48px;
+            font-size: 15px;
+            font-weight: 800;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            background-color: #d4a11c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* PANEL BASE DE DATOS (fuera de la hoja impresa) */
+        .btn-db { background-color: #0a1c27; color: #ffffff; }
+        .btn-db:hover { background-color: #143344; }
+        .btn-db:disabled { opacity: 0.6; cursor: wait; transform: none; }
+
+        .db-panel {
+            width: 794px;
+            max-width: 100%;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 18px 22px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .db-status { font-size: 14px; color: var(--text-muted); }
+        .db-status.ok { color: #166534; }
+        .db-status.err { color: #991b1b; }
+        .db-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--dark-blue);
+        }
+        .db-select {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-family: inherit;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: #f8fafc;
+            outline: none;
+        }
+        .db-editbar {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: #fffbeb;
+            border: 1px solid var(--gold);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--dark-blue);
+        }
+        .db-editbar.on { display: flex; }
+        .db-editbar button {
+            border: none;
+            background: var(--dark-blue);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .crud-panel {
+            width: 794px;
+            max-width: 100%;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+        .crud-head {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        .crud-head h2 {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--dark-blue);
+            margin-right: auto;
+        }
+        .crud-search {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 14px;
+            font-size: 14px;
+            font-family: inherit;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            outline: none;
+        }
+        .crud-search:focus { border-color: var(--gold); }
+        .crud-new {
+            border: none;
+            background: var(--gold);
+            color: var(--dark-blue);
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 11px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .crud-count { font-size: 13px; color: var(--text-muted); width: 100%; }
+        .crud-table-wrap { overflow-x: auto; }
+        .crud-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .crud-table th {
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--dark-blue);
+            border-bottom: 2px solid var(--gold);
+            padding: 10px 12px;
+            white-space: nowrap;
+        }
+        .crud-table td { border-bottom: 1px solid #e2e8f0; padding: 10px 12px; vertical-align: middle; }
+        .crud-table tr:hover td { background: #f8fafc; }
+        .crud-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; min-width: 90px; }
+        .crud-bar > div { height: 100%; background: var(--gold); }
+        .crud-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .crud-actions button {
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            color: var(--dark-blue);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 7px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .crud-actions button:hover { border-color: var(--gold); }
+        .crud-actions .danger { color: #991b1b; border-color: #fecaca; }
+        .crud-actions .danger:hover { background: #fef2f2; border-color: #991b1b; }
+        .crud-empty { text-align: center; color: var(--text-muted); padding: 16px; font-size: 13px; }
+
+        /* LAYOUT EN COLUMNAS: hoja a la izquierda, controles a la derecha */
+        .layout {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            justify-content: center;
+            width: 100%;
+            max-width: 1520px;
+        }
+        .carta-sheet { flex-shrink: 0; }
+        .side {
+            width: 560px;
+            max-width: 100%;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            padding-bottom: 4px;
+        }
+        .side .btn-container {
+            margin-top: 0;
+            justify-content: flex-start;
+        }
+        .side .btn-action {
+            padding: 12px 22px;
+            font-size: 13px;
+        }
+        .side .db-panel,
+        .side .crud-panel {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 16px;
+        }
+        .side .crud-panel { margin-bottom: 4px; }
+        .crud-table { min-width: 640px; }
+
+        @media (max-width: 1400px) {
+            .layout { flex-direction: column; align-items: center; }
+            .side {
+                position: static;
+                width: 794px;
+                max-height: none;
+                overflow: visible;
+            }
+            .side .btn-container { justify-content: center; }
+        }
+
+        /* MODO RENDERIZADO EXCLUSIVO PDF */
+        .pdf-render-mode {
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        .pdf-render-mode .field-group input {
+            display: none !important;
+        }
+
+        .pdf-render-mode .pdf-value-text {
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layout">
+    <!-- HOJA CARTA EXACTA (LO ÚNICO QUE SE CONVIERTE A PDF) -->
+    <div class="carta-sheet" id="hoja-carta">
+        <!-- Encabezado con Logo y Campos -->
+        <div class="header">
+            <img src="assets/images/logo-curvas-01.png" alt="Bardial Inmobiliaria">
+            
+            <div class="inputs-row">
+                <div class="field-group">
+                    <label for="casa-input">Nombre / Identificación de la Casa</label>
+                    <input type="text" id="casa-input" placeholder="Ej. Casa Residencial Los Olivos / Finca El Roble...">
+                    <div class="pdf-value-text" id="casa-pdf-txt"></div>
+                </div>
+                <div class="field-group">
+                    <label for="direccion-input">Dirección de la Propiedad</label>
+                    <input type="text" id="direccion-input" placeholder="Ej. Calle Av. de los Bosques #123, Col. Jardines...">
+                    <div class="pdf-value-text" id="direccion-pdf-txt"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contenido de Documentos -->
+        <div class="main-content">
+            <div class="title-box">
+                <h1>Checklist de Documentación de Propiedad</h1>
+            </div>
+
+            <div class="checklist-grid">
+                <label class="item-card">
+                    <input type="checkbox" data-item="1">
+                    <div class="item-text">
+                        <strong>Escritura / título de propiedad</strong>
+                    </div>
+                </label>
+
+                <label class="item-card">
+                    <input type="checkbox" data-item="2">
+                    <div class="item-text">
+                        <strong>Boleta o certificado del Registro Público de la Propiedad</strong>
+                    </div>
+                </label>
+
+                <label class="item-card">
+                    <input type="checkbox" data-item="3">
+                    <div class="item-text">
+                        <strong>Certificado de libertad de gravamen</strong>
+                    </div>
+                </label>
+
+                <label class="item-card">
+                    <input type="checkbox" data-item="4">
+                    <div class="item-text">
+                        <strong>Predial — último recibo pagado</strong>
+                    </div>
+                </label>
+
+                <label class="item-card">
+                    <input type="checkbox" data-item="5">
+                    <div class="item-text">
+                        <strong>Constancia de no adeudo de predial</strong>
+                    </div>
+                </label>
+
+                <label class="item-card">
+                    <input type="checkbox" data-item="6">
+                    <div class="item-text">
+                        <strong>Agua — último recibo pagado</strong>
+                    </div>
+                </label>
+
+                <label class="item-card">
+                    <input type="checkbox" data-item="7">
+                    <div class="item-text">
+                        <strong>Constancia de no adeudo de agua</strong>
+                    </div>
+                </label>
+
+                <label class="item-card">
+                    <input type="checkbox" data-item="8">
+                    <div class="item-text">
+                        <strong>Número oficial</strong>
+                    </div>
+                </label>
+
+                <label class="item-card">
+                    <input type="checkbox" data-item="9">
+                    <div class="item-text">
+                        <strong>Avalúo vigente</strong>
+                    </div>
+                </label>
+
+                <label class="item-card">
+                    <input type="checkbox" data-item="10">
+                    <div class="item-text">
+                        <strong>Planos / medidas y colindancias</strong>
+                    </div>
+                </label>
+
+                <label class="item-card">
+                    <input type="checkbox" data-item="11">
+                    <div class="item-text">
+                        <strong>Identificación oficial del propietario</strong>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div><!-- /#hoja-carta -->
+
+    <aside class="side">
+    <!-- BOTÓN DE ACCIÓN INDEPENDIENTE FUERA DE LA HOJA -->
+    <div class="btn-container">
+        <button class="btn-action" onclick="generarPDF()">Generar PDF</button>
+        <button class="btn-action btn-db" id="btn-guardar" onclick="guardarEnDB()">Guardar</button>
+    </div>
+
+    <!-- PANEL BASE DE DATOS (fuera de la hoja, no sale en el PDF) -->
+    <div class="db-panel">
+        <div id="db-status" class="db-status">Escribe casa + dirección y pulsa «Guardar».</div>
+        <div id="edit-bar" class="db-editbar">
+            <span id="edit-label">Editando expediente #0</span>
+            <button onclick="cancelarEdicion()">Cancelar</button>
+        </div>
+        <label class="db-label" for="expediente-select">Historial guardado</label>
+        <select id="expediente-select" class="db-select" onchange="cargarPorId(this.value)">
+            <option value="">— Selecciona un expediente —</option>
+        </select>
+    </div>
+
+    <!-- HISTORIAL CRUD (fuera de la hoja, no sale en el PDF) -->
+    <div class="crud-panel">
+        <div class="crud-head">
+            <h2>Historial de expedientes</h2>
+            <input id="crud-search" class="crud-search" type="text" placeholder="Buscar por casa o dirección..." oninput="filtrarHistorial()">
+            <button class="crud-new" onclick="nuevoExpediente()">+ Nuevo</button>
+            <span id="crud-count" class="crud-count"></span>
+        </div>
+        <div class="crud-table-wrap">
+            <table class="crud-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Casa</th>
+                        <th>Dirección</th>
+                        <th>Avance</th>
+                        <th>Actualizado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="crud-body">
+                    <tr><td colspan="6" class="crud-empty">Cargando historial...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </aside>
+    </div><!-- /.layout -->
+
+    <script>
+        function leerFormulario() {
+            const casa = document.getElementById('casa-input').value.trim();
+            const direccion = document.getElementById('direccion-input').value.trim();
+            const data = { casa_nombre: casa, direccion: direccion };
+            document.querySelectorAll('.checklist-grid input[type="checkbox"][data-item]').forEach((c) => {
+                data['item' + c.getAttribute('data-item')] = c.checked ? 1 : 0;
+            });
+            return data;
+        }
+
+        function aplicarExpediente(exp) {
+            document.getElementById('casa-input').value = exp.casa_nombre || '';
+            document.getElementById('direccion-input').value = exp.direccion || '';
+            for (let i = 1; i <= 11; i++) {
+                const c = document.querySelector('.checklist-grid input[data-item="' + i + '"]');
+                if (c) c.checked = String(exp['item' + i]) === '1';
+            }
+        }
+
+        function setStatus(msg, tipo) {
+            const el = document.getElementById('db-status');
+            el.innerText = msg;
+            el.className = 'db-status' + (tipo ? ' ' + tipo : '');
+        }
+
+        let editId = 0;
+        let historialCache = [];
+        const LS_KEY = 'bardial_expedientes';
+
+        function ahora() {
+            const d = new Date();
+            const p = (n) => String(n).padStart(2, '0');
+            return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+        }
+
+        function contarItems(exp) {
+            let n = 0;
+            for (let i = 1; i <= 11; i++) if (String(exp['item' + i]) === '1' || exp['item' + i] === 1) n++;
+            return n;
+        }
+
+        function leerDatos() {
+            try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); }
+            catch (e) { return []; }
+        }
+
+        function escribirDatos(arr) {
+            localStorage.setItem(LS_KEY, JSON.stringify(arr));
+        }
+
+        function esc(s) {
+            return String(s == null ? '' : s).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+        }
+
+        function etiquetaGuardar() { return 'Guardar'; }
+
+        function setEditMode(id) {
+            editId = id || 0;
+            const bar = document.getElementById('edit-bar');
+            const btn = document.getElementById('btn-guardar');
+            if (editId > 0) {
+                document.getElementById('edit-label').innerText = 'Editando expediente #' + editId + ' — «' + etiquetaGuardar() + '» actualizará este registro.';
+                bar.classList.add('on');
+                btn.innerText = 'Actualizar #' + editId;
+            } else {
+                bar.classList.remove('on');
+                btn.innerText = etiquetaGuardar();
+            }
+        }
+
+        function nuevoExpediente() {
+            document.getElementById('casa-input').value = '';
+            document.getElementById('direccion-input').value = '';
+            document.querySelectorAll('.checklist-grid input[type="checkbox"][data-item]').forEach((c) => { c.checked = false; });
+            document.getElementById('expediente-select').value = '';
+            setEditMode(0);
+            setStatus('Formulario limpio. Llena y pulsa «' + etiquetaGuardar() + '» para crear.');
+            document.getElementById('casa-input').focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelarEdicion() {
+            setEditMode(0);
+            setStatus('Edición cancelada. «' + etiquetaGuardar() + '» creará un registro nuevo.');
+        }
+
+        function guardarEnDB() {
+            const data = leerFormulario();
+            if (!data.casa_nombre) { setStatus('Escribe el nombre de la casa antes de guardar.', 'err'); return; }
+            const esUpdate = editId > 0;
+            const arr = leerDatos();
+            if (esUpdate) {
+                const i = arr.findIndex((e) => String(e.id) === String(editId));
+                if (i === -1) { setStatus('Error: expediente #' + editId + ' no existe.', 'err'); return; }
+                arr[i] = Object.assign({}, data, { id: arr[i].id, updated_at: ahora() });
+                setStatus('Expediente #' + arr[i].id + ' actualizado.', 'ok');
+                setEditMode(0);
+            } else {
+                const dup = arr.find((e) => e.casa_nombre === data.casa_nombre && (e.direccion || '') === (data.direccion || ''));
+                let id;
+                if (dup) {
+                    Object.assign(dup, data, { updated_at: ahora() });
+                    id = dup.id;
+                } else {
+                    id = Date.now();
+                    arr.push(Object.assign({}, data, { id: id, updated_at: ahora() }));
+                }
+                setStatus('Guardado (id ' + id + ').', 'ok');
+            }
+            escribirDatos(arr);
+            refrescarHistorial(esUpdate ? undefined : arr[arr.length - 1].id);
+        }
+
+        function eliminarExpediente(id) {
+            const row = historialCache.find((e) => String(e.id) === String(id));
+            const nombre = row ? row.casa_nombre : ('#' + id);
+            if (!confirm('¿Eliminar «' + nombre + '» del historial?')) return;
+            escribirDatos(leerDatos().filter((e) => String(e.id) !== String(id)));
+            if (editId && String(editId) === String(id)) setEditMode(0);
+            setStatus('Expediente #' + id + ' eliminado.', 'ok');
+            refrescarHistorial();
+        }
+
+        function obtenerExpediente(id) {
+            const exp = leerDatos().find((e) => String(e.id) === String(id));
+            if (!exp) throw new Error('No encontrado.');
+            return exp;
+        }
+
+        async function editarExpediente(id) {
+            setStatus('Cargando expediente #' + id + ' para editar...');
+            try {
+                const exp = await obtenerExpediente(id);
+                aplicarExpediente(exp);
+                setEditMode(exp.id);
+                setStatus('Editando expediente #' + exp.id + '. Modifica y pulsa «Actualizar».', 'ok');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (e) {
+                setStatus('Error: ' + e.message, 'err');
+            }
+        }
+
+        async function pdfExpediente(id) {
+            try {
+                aplicarExpediente(await obtenerExpediente(id));
+                generarPDF();
+            } catch (e) {
+                setStatus('Error: ' + e.message, 'err');
+            }
+        }
+
+        function cargarPorId(id) {
+            if (!id) return;
+            try {
+                aplicarExpediente(obtenerExpediente(id));
+                setStatus('Expediente #' + id + ' cargado.', 'ok');
+            } catch (e) {
+                setStatus('Error: ' + e.message, 'err');
+            }
+        }
+
+        function refrescarHistorial(seleccionarId) {
+            historialCache = leerDatos().slice().sort((a, b) => String(b.updated_at || '').localeCompare(String(a.updated_at || '')));
+            historialCache.forEach((e) => { e.completados = contarItems(e); });
+            const sel = document.getElementById('expediente-select');
+            sel.innerHTML = '<option value="">— Selecciona un expediente —</option>';
+            historialCache.forEach((e) => {
+                const o = document.createElement('option');
+                o.value = e.id;
+                o.textContent = '#' + e.id + ' · ' + e.casa_nombre + (e.direccion ? ' — ' + e.direccion : '') + ' (' + e.completados + '/11)';
+                if (seleccionarId && String(seleccionarId) === String(e.id)) o.selected = true;
+                sel.appendChild(o);
+            });
+            pintarTabla();
+        }
+
+        function pintarTabla() {
+            const q = (document.getElementById('crud-search').value || '').toLowerCase().trim();
+            const body = document.getElementById('crud-body');
+            const rows = historialCache.filter((e) => {
+                if (!q) return true;
+                return (e.casa_nombre + ' ' + (e.direccion || '')).toLowerCase().includes(q);
+            });
+            document.getElementById('crud-count').innerText = historialCache.length + ' expediente(s)' + (q ? ' · ' + rows.length + ' coinciden' : '');
+            if (rows.length === 0) {
+                body.innerHTML = '<tr><td colspan="6" class="crud-empty">' + (historialCache.length === 0 ? 'Sin expedientes guardados.' : 'Sin coincidencias para la búsqueda.') + '</td></tr>';
+                return;
+            }
+            body.innerHTML = rows.map((e) => {
+                const pct = Math.round((e.completados / 11) * 100);
+                return '<tr>' +
+                    '<td><strong>#' + e.id + '</strong></td>' +
+                    '<td>' + esc(e.casa_nombre) + '</td>' +
+                    '<td>' + esc(e.direccion || '—') + '</td>' +
+                    '<td><div class="crud-bar"><div style="width:' + pct + '%"></div></div><small>' + e.completados + '/11</small></td>' +
+                    '<td><small>' + esc(e.updated_at || '') + '</small></td>' +
+                    '<td><div class="crud-actions">' +
+                        '<button onclick="cargarPorId(' + e.id + ')">Ver</button>' +
+                        '<button onclick="editarExpediente(' + e.id + ')">Editar</button>' +
+                        '<button onclick="pdfExpediente(' + e.id + ')">PDF</button>' +
+                        '<button class="danger" onclick="eliminarExpediente(' + e.id + ')">Eliminar</button>' +
+                    '</div></td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function filtrarHistorial() { pintarTabla(); }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('btn-guardar').innerText = 'Guardar';
+            refrescarHistorial();
+        });
+
+        function generarPDF() {
+            const hoja = document.getElementById('hoja-carta');
+            
+            // Pasar valores de los inputs al texto estático
+            const casa = document.getElementById('casa-input').value.trim();
+            const direccion = document.getElementById('direccion-input').value.trim();
+            
+            document.getElementById('casa-pdf-txt').innerText = casa || '—';
+            document.getElementById('direccion-pdf-txt').innerText = direccion || '—';
+
+            // Activar modo de renderizado estético para PDF
+            hoja.classList.add('pdf-render-mode');
+
+            // Configuración exacta para hoja Tamaño Carta (Letter)
+            const opt = {
+                margin:       0,
+                filename:     'Checklist_Documentos_Propiedad.pdf',
+                image:        { type: 'jpeg', quality: 1.0 },
+                html2canvas:  { 
+                    scale: 3, 
+                    useCORS: true, 
+                    scrollY: 0,
+                    scrollX: 0,
+                    width: 794,
+                    height: 1024
+                },
+                jsPDF:        { 
+                    unit: 'px', 
+                    format: [794, 1024], 
+                    hotfixes: ['px_scaling']
+                }
+            };
+
+            // Capturar ÚNICAMENTE la hoja y guardar PDF
+            html2pdf().set(opt).from(hoja).save().then(() => {
+                hoja.classList.remove('pdf-render-mode');
+            }).catch((err) => {
+                console.error(err);
+                hoja.classList.remove('pdf-render-mode');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -27,19 +27,20 @@ function getPropertyById(int $id): ?array {
 }
 
 function createProperty(array $data): int {
-    $stmt = getDB()->prepare('INSERT INTO propiedades (price, price_value, location, type, city, bed, bath, sqm, services, description, badge, sold, video, img, images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    $stmt = getDB()->prepare('INSERT INTO propiedades (price, price_value, location, type, operation, city, bed, bath, sqm, construction_sqm, services, description, sold, video, img, images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
     $stmt->execute([
         $data['price'],
         !empty($data['price_value']) ? (float)$data['price_value'] : null,
         $data['location'],
         $data['type'] ?: null,
+        $data['operation'] ?: null,
         $data['city'] ?: null,
         (int)($data['bed'] ?? 0),
         (int)($data['bath'] ?? 0),
         (int)($data['sqm'] ?? 0),
+        (int)($data['construction_sqm'] ?? 0),
         $data['services'] ?: null,
         $data['description'] ?? null,
-        $data['badge'] ?: null,
         !empty($data['sold']) ? 1 : 0,
         $data['video'] ?: null,
         $data['img'],
@@ -49,19 +50,20 @@ function createProperty(array $data): int {
 }
 
 function updateProperty(int $id, array $data): void {
-    $stmt = getDB()->prepare('UPDATE propiedades SET price = ?, price_value = ?, location = ?, type = ?, city = ?, bed = ?, bath = ?, sqm = ?, services = ?, description = ?, badge = ?, sold = ?, video = ?, img = ?, images = ? WHERE id = ?');
+    $stmt = getDB()->prepare('UPDATE propiedades SET price = ?, price_value = ?, location = ?, type = ?, operation = ?, city = ?, bed = ?, bath = ?, sqm = ?, construction_sqm = ?, services = ?, description = ?, sold = ?, video = ?, img = ?, images = ? WHERE id = ?');
     $stmt->execute([
         $data['price'],
         !empty($data['price_value']) ? (float)$data['price_value'] : null,
         $data['location'],
         $data['type'] ?: null,
+        $data['operation'] ?: null,
         $data['city'] ?: null,
         (int)($data['bed'] ?? 0),
         (int)($data['bath'] ?? 0),
         (int)($data['sqm'] ?? 0),
+        (int)($data['construction_sqm'] ?? 0),
         $data['services'] ?: null,
         $data['description'] ?? null,
-        $data['badge'] ?: null,
         !empty($data['sold']) ? 1 : 0,
         $data['video'] ?: null,
         $data['img'],
@@ -73,4 +75,8 @@ function updateProperty(int $id, array $data): void {
 function deleteProperty(int $id): void {
     $stmt = getDB()->prepare('DELETE FROM propiedades WHERE id = ?');
     $stmt->execute([$id]);
+}
+
+function togglePropertySold(int $id): void {
+    getDB()->prepare('UPDATE propiedades SET sold = CASE WHEN sold = 1 THEN 0 ELSE 1 END WHERE id = ?')->execute([$id]);
 }

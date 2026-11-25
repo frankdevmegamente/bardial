@@ -3,13 +3,23 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 requireAdmin();
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['action_toggle_sold'])) {
+    $toggleId = (int)($_POST['property_id'] ?? 0);
+    if ($toggleId > 0) {
+        togglePropertySold($toggleId);
+        $_SESSION['flash'] = 'Estado de la propiedad actualizado.';
+    }
+    $qs = trim($_POST['qs'] ?? '');
+    header('Location: properties.php' . ($qs !== '' ? '?' . $qs : ''));
+    exit;
+}
+
 $properties = getAllProperties();
 
 // Filtros
 $search  = trim($_GET['search'] ?? '');
 $status  = $_GET['status'] ?? '';
 $beds    = $_GET['beds'] ?? '';
-$badge   = $_GET['badge'] ?? '';
 $filterType = $_GET['filter_type'] ?? '';
 $filterCity = $_GET['filter_city'] ?? '';
 
@@ -25,13 +35,6 @@ if ($beds !== '') {
     $minBeds = (int)$beds;
     $properties = array_filter($properties, fn($p) => (int)$p['bed'] >= $minBeds);
 }
-if ($badge === 'with') {
-    $properties = array_filter($properties, fn($p) => !empty($p['badge']));
-} elseif ($badge === 'without') {
-    $properties = array_filter($properties, fn($p) => empty($p['badge']));
-} elseif ($badge !== '') {
-    $properties = array_filter($properties, fn($p) => ($p['badge'] ?? '') === $badge);
-}
 if ($filterType !== '') {
     $properties = array_filter($properties, fn($p) => ($p['type'] ?? '') === $filterType);
 }
@@ -42,7 +45,6 @@ if ($filterCity !== '') {
 $filtered = count($properties);
 $totalAll = count(getAllProperties());
 
-$badgesList = array_unique(array_filter(array_column(getAllProperties(), 'badge'), fn($b) => !empty($b)));
 $typesList = array_unique(array_filter(array_column(getAllProperties(), 'type'), fn($t) => !empty($t)));
 sort($typesList);
 $citiesList = array_unique(array_filter(array_column(getAllProperties(), 'city'), fn($c) => !empty($c)));
@@ -104,17 +106,7 @@ include __DIR__ . '/includes/header.php';
 <option value="5" <?php echo $beds === '5' ? 'selected' : ''; ?>>5+</option>
 </select>
 </div>
-<div style="min-width:130px;">
-<label class="form-label small fw-semibold text-muted mb-1" for="badge">Etiqueta</label>
-<select class="form-select form-select-sm" id="badge" name="badge">
-<option value="">Todas</option>
-<option value="with" <?php echo $badge === 'with' ? 'selected' : ''; ?>>Con etiqueta</option>
-<option value="without" <?php echo $badge === 'without' ? 'selected' : ''; ?>>Sin etiqueta</option>
-<?php foreach ($badgesList as $b): ?>
-<option value="<?php echo htmlspecialchars($b); ?>" <?php echo $badge === $b ? 'selected' : ''; ?>><?php echo htmlspecialchars($b); ?></option>
-<?php endforeach; ?>
-</select>
-</div>
+
 <div style="min-width:140px;">
 <label class="form-label small fw-semibold text-muted mb-1" for="filter_type">Tipo</label>
 <select class="form-select form-select-sm" id="filter_type" name="filter_type">
@@ -134,8 +126,8 @@ include __DIR__ . '/includes/header.php';
 </select>
 </div>
 <div class="d-flex gap-2">
-<button class="btn btn-gold btn-sm px-3" type="submit"><i class="bi bi-funnel me-1"></i> Filtrar</button>
-<a href="properties.php" class="btn btn-outline-modern btn-sm px-3"><i class="bi bi-x me-1"></i> Limpiar</a>
+<button class="btn btn-gold btn-sm px-3" type="submit" title="Filtrar" aria-label="Filtrar"><i class="bi bi-funnel me-1"></i> Filtrar</button>
+<a href="properties.php" class="btn btn-outline-modern btn-sm px-3" title="Limpiar filtros" aria-label="Limpiar filtros"><i class="bi bi-x me-1"></i> Limpiar</a>
 </div>
 </form>
 
@@ -158,12 +150,6 @@ include __DIR__ . '/includes/header.php';
 <img src="<?php echo strpos($p['img'], 'uploads/') === 0 ? '/bardial/' . $p['img'] : htmlspecialchars($p['img']); ?>" alt="<?php echo htmlspecialchars($p['location']); ?>" class="w-100 h-100" style="object-fit:cover;transition:transform .3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
 <?php else: ?>
 <div class="w-100 h-100 d-flex align-items-center justify-content-center text-muted"><i class="bi bi-image fs-1"></i></div>
-<?php endif; ?>
-<!-- Badge -->
-<?php if ($p['badge']): ?>
-<div class="position-absolute top-0 start-0 p-3">
-<span class="badge badge-gold rounded-pill"><?php echo htmlspecialchars($p['badge']); ?></span>
-</div>
 <?php endif; ?>
 <!-- Status -->
 <div class="position-absolute top-0 end-0 p-3">
@@ -189,8 +175,18 @@ include __DIR__ . '/includes/header.php';
 </div>
 <!-- Footer -->
 <div class="card-footer bg-white border-0 px-3 pb-3 pt-0 d-flex gap-2">
+<button type="button" class="btn btn-outline-modern btn-sm" title="Ver lona para impresión" aria-label="Ver lona para impresión" data-bs-toggle="modal" data-bs-target="#lonaModal" data-id="<?php echo (int)$p['id']; ?>"><i class="bi bi-aspect-ratio me-1"></i>Lona</button>
+<button type="button" class="btn btn-outline-modern btn-sm" title="Ver código QR" aria-label="Ver código QR" data-bs-toggle="modal" data-bs-target="#qrModal" data-url="<?php echo htmlspecialchars(propertyAbsoluteUrl((int)$p['id'])); ?>" data-title="<?php echo htmlspecialchars($p['location']); ?>" data-id="<?php echo (int)$p['id']; ?>"><i class="bi bi-qr-code-scan me-1"></i>QR</button>
 <a href="edit.php?id=<?php echo $p['id']; ?>" class="btn btn-gold btn-sm flex-fill"><i class="bi bi-pencil me-1"></i> Editar</a>
-<a href="delete.php?id=<?php echo $p['id']; ?>" class="btn btn-outline-modern btn-sm" style="border-color:#fecaca;color:#dc2626;"><i class="bi bi-trash"></i></a>
+<form method="post" class="d-inline">
+<input type="hidden" name="action_toggle_sold" value="1">
+<input type="hidden" name="property_id" value="<?php echo (int)$p['id']; ?>">
+<input type="hidden" name="qs" value="<?php echo htmlspecialchars(http_build_query($_GET)); ?>">
+<button type="submit" class="btn btn-outline-modern btn-sm" title="<?php echo $p['sold'] ? 'Marcar como disponible' : 'Marcar como vendida'; ?>" aria-label="<?php echo $p['sold'] ? 'Marcar como disponible' : 'Marcar como vendida'; ?>" style="<?php echo $p['sold'] ? 'border-color:#bbf7d0;color:#059669;' : 'border-color:#fecaca;color:#dc2626;'; ?>">
+<i class="bi <?php echo $p['sold'] ? 'bi-check-circle' : 'bi-x-circle'; ?> me-1"></i><?php echo $p['sold'] ? 'Disponible' : 'Vendido'; ?>
+</button>
+</form>
+<a href="delete.php?id=<?php echo $p['id']; ?>" class="btn btn-outline-modern btn-sm" style="border-color:#fecaca;color:#dc2626;" title="Eliminar propiedad" aria-label="Eliminar propiedad"><i class="bi bi-trash me-1"></i>Eliminar</a>
 </div>
 </div>
 </div>
@@ -198,5 +194,60 @@ include __DIR__ . '/includes/header.php';
 
 </div>
 <?php endif; ?>
+
+<!-- QR Modal -->
+<div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content" style="border-radius:var(--radius);overflow:hidden;">
+<div class="modal-header" style="border-bottom:1px solid rgba(0,0,0,.04);">
+<h5 class="modal-title" id="qrModalLabel" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;"><i class="bi bi-qr-code-scan me-2" style="color:var(--gold);"></i>Código QR</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+</div>
+<div class="modal-body text-center p-4">
+<div class="mx-auto d-inline-block p-3" style="background:#fff;border:1px solid #e5e7eb;border-radius:var(--radius-sm);">
+<canvas id="qrCanvas" width="260" height="260"></canvas>
+</div>
+<p id="qrTitle" class="fw-semibold mt-3 mb-1" style="font-size:.95rem;"></p>
+<p id="qrUrl" class="small text-muted mb-0" style="word-break:break-all;"></p>
+</div>
+<div class="modal-footer justify-content-center" style="border-top:1px solid rgba(0,0,0,.04);">
+<a id="qrDownload" class="btn btn-gold" href="#" download><i class="bi bi-download me-1"></i> Descargar QR</a>
+<button type="button" class="btn btn-outline-modern" data-bs-dismiss="modal">Cerrar</button>
+</div>
+</div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var modal = document.getElementById('qrModal');
+    if (!modal) return;
+    modal.addEventListener('shown.bs.modal', function(e) {
+        var btn = e.relatedTarget;
+        if (!btn) return;
+        var url = btn.getAttribute('data-url') || '';
+        var title = btn.getAttribute('data-title') || '';
+        var id = btn.getAttribute('data-id') || '0';
+        var canvas = document.getElementById('qrCanvas');
+        document.getElementById('qrTitle').textContent = title;
+        document.getElementById('qrUrl').textContent = url;
+        var dl = document.getElementById('qrDownload');
+        dl.setAttribute('href', '#');
+        dl.setAttribute('download', 'bardial-qr-prop-' + id + '.png');
+        QRCode.toCanvas(canvas, url, {
+            width: 260,
+            margin: 1,
+            errorCorrectionLevel: 'H',
+            color: { dark: '#081C27FF', light: '#FFFFFFFF' }
+        }, function(err) {
+            if (err) { console.error(err); return; }
+            dl.setAttribute('href', canvas.toDataURL('image/png'));
+        });
+    });
+});
+</script>
+
+<?php include __DIR__ . '/../includes/lona-ui.php'; ?>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

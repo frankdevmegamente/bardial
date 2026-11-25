@@ -259,9 +259,7 @@ $serviceIcons = [
 <a href="detalles.php?id=<?php echo $sp['id']; ?>" class="bg-white dark:bg-surface-dark border border-outline-variant/15 group hover:shadow-xl transition-all duration-500 overflow-hidden">
 <div class="relative h-[280px] overflow-hidden">
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="<?php echo htmlspecialchars($sp['img']); ?>" alt="<?php echo htmlspecialchars($sp['location']); ?>"/>
-<?php if ($sp['badge']): ?>
-<div class="absolute top-4 left-4 bg-brand-navy text-white text-[10px] uppercase font-bold px-3 py-1 tracking-widest"><?php echo htmlspecialchars($sp['badge']); ?></div>
-<?php endif; ?>
+
 </div>
 <div class="p-8">
 <div class="text-secondary-fixed-dim font-headline-md text-title-lg mb-2"><?php echo htmlspecialchars($sp['price']); ?></div>

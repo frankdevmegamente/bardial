@@ -1,0 +1,128 @@
+# =====================================================
+# .htaccess para bardial.albardi.mx
+# Subdominio con sitio PHP (Bardial Inmobiliaria)
+# Subir este archivo a la RAIZ del subdominio
+# (la carpeta donde estan index.php, catalogo.php, etc.)
+# =====================================================
+
+# 1. Pagina por defecto
+DirectoryIndex index.php index.html
+
+# 2. No listar carpetas + UTF-8
+Options -Indexes
+AddDefaultCharset UTF-8
+ServerSignature Off
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # -------------------------------------------------
+    # A) Forzar HTTPS (dejar activo solo si ya tienes SSL)
+    # Si te da "demasiadas redirecciones", comenta estas 2 lineas con #
+    # -------------------------------------------------
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # -------------------------------------------------
+    # B) Quitar www del subdominio
+    # www.bardial.albardi.mx -> bardial.albardi.mx
+    # -------------------------------------------------
+    RewriteCond %{HTTP_HOST} ^www\.bardial\.albardi\.mx [NC]
+    RewriteRule ^(.*)$ https://bardial.albardi.mx/$1 [L,R=301]
+
+    # -------------------------------------------------
+    # C) URLs limpias / bonitas
+    # /catalogo -> catalogo.php
+    # /propiedad/5 -> detalles.php?id=5
+    # Tus links viejos con .php siguen funcionando
+    # -------------------------------------------------
+
+    # Detalle de propiedad: /propiedad/5 , /detalle/5 , /propiedad/5/mi-casa
+    RewriteRule ^(propiedad|detalle|property)/([0-9]+)(/.*)?/?$ detalles.php?id=$2 [L,QSA]
+
+    # Paginas principales sin .php
+    RewriteRule ^catalogo/?$ catalogo.php [L,QSA]
+    RewriteRule ^nosotros/?$ about.php [L,QSA]
+    RewriteRule ^about/?$ about.php [L,QSA]
+    RewriteRule ^contacto/?$ contacto.php [L,QSA]
+    RewriteRule ^privacidad/?$ privacy.php [L,QSA]
+    RewriteRule ^privacy/?$ privacy.php [L,QSA]
+    RewriteRule ^terminos/?$ terms.php [L,QSA]
+    RewriteRule ^terms/?$ terms.php [L,QSA]
+    RewriteRule ^cookies/?$ cookies.php [L,QSA]
+    RewriteRule ^inicio/?$ index.php [L,QSA]
+
+    # Cualquier otra URL sin extension: /contacto -> contacto.php si existe el archivo
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^(.+?)/?$ $1.php [L]
+</IfModule>
+
+# -------------------------------------------------
+# D) Pagina de error 404 (usa tu index si no tienes 404.php)
+# Si luego creas un 404.php, cambia index.php por 404.php
+# -------------------------------------------------
+ErrorDocument 404 /index.php
+ErrorDocument 403 /index.php
+
+# -------------------------------------------------
+# E) Seguridad: bloquear archivos sensibles y carpetas
+# -------------------------------------------------
+
+# Bloquear config con contrasenas, .env, .git, .sql
+<FilesMatch "^(config\.php|\.env|composer\.(json|lock)|.*\.sql|.*\.log)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Bloquear acceso a .htaccess, .htpasswd, .git, .gitignore
+<FilesMatch "^\.ht">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+RedirectMatch 403 ^/\.git/.*$
+RedirectMatch 403 ^/sql/.*$
+
+# Bloquear includes/*.php directos? NO, los necesitas via include.
+# Solo bloqueamos config.php (arriba). Si quieres bloquear todo includes:
+# Descomenta estas 3 lineas SOLO si tu sitio sigue funcionando:
+# RewriteRule ^includes/config\.php$ - [F,L]
+
+# -------------------------------------------------
+# F) Rendimiento: cache y compresion (solo si el host lo permite)
+# -------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType video/mp4 "access plus 1 month"
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# -------------------------------------------------
+# G) Videos mp4: que se vean directo en el navegador
+# -------------------------------------------------
+<IfModule mod_mime.c>
+    AddType video/mp4 .mp4 .m4v
+</IfModule>

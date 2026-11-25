@@ -9,35 +9,7 @@
 <div class="absolute inset-0 hero-gradient" style="background: linear-gradient(to bottom, rgba(8, 28, 39, 0.4), rgba(8, 28, 39, 0.8));"></div>
 <div class="relative z-10 w-full max-w-[1800px] px-margin-mobile md:px-margin-desktop text-center text-white">
 <h1 class="font-display-lg text-display-lg md:text-[80px] leading-tight mb-6 max-w-4xl mx-auto">Vida Exquisita, Definida por la Excelencia.</h1>
-<p class="font-body-lg text-body-lg mb-12 opacity-90 tracking-wide">Descubra las propiedades más prestigiosas del mercado con Bardial Inmobiliaria.</p>
-<div class="bg-white dark:bg-surface-container-dark p-2 md:p-4 shadow-2xl max-w-5xl mx-auto dark:shadow-black/30">
-<form class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
-<div class="flex flex-col text-left px-4 border-b md:border-b-0 md:border-r border-outline-variant/50">
-<label class="text-[10px] font-bold text-brand-navy dark:text-secondary-fixed-dim uppercase tracking-tighter mb-1">Tipo de propiedad</label>
-<select class="border-none focus:ring-0 p-0 text-brand-navy dark:text-surface-variant font-semibold bg-transparent cursor-pointer">
-<option>Villa de Lujo</option>
-<option>Apartamento Premium</option>
-<option>Residencia Histórica</option>
-</select>
-</div>
-<div class="flex flex-col text-left px-4 border-b md:border-b-0 md:border-r border-outline-variant/50">
-<label class="text-[10px] font-bold text-brand-navy dark:text-secondary-fixed-dim uppercase tracking-tighter mb-1">Ubicación</label>
-<input class="border-none focus:ring-0 p-0 text-brand-navy dark:text-surface-variant font-semibold bg-transparent placeholder:text-outline dark:placeholder:text-surface-variant" placeholder="Ciudad de México, Cancún..." type="text"/>
-</div>
-<div class="flex flex-col text-left px-4 border-b md:border-b-0 md:border-r border-outline-variant/50">
-<label class="text-[10px] font-bold text-brand-navy dark:text-secondary-fixed-dim uppercase tracking-tighter mb-1">Precio Máximo</label>
-<select class="border-none focus:ring-0 p-0 text-brand-navy dark:text-surface-variant font-semibold bg-transparent cursor-pointer">
-<option>Cualquier Precio</option>
-<option>$1M - $5M MXN</option>
-<option>$5M - $10M MXN</option>
-<option>+$10M MXN</option>
-</select>
-</div>
-<div class="px-2">
-<button class="bg-secondary-fixed-dim text-brand-navy w-full py-4 font-label-md text-label-md font-bold uppercase transition-transform hover:scale-[1.02]">Buscar Ahora</button>
-</div>
-</form>
-</div>
+<p class="font-body-lg text-body-lg opacity-90 tracking-wide">Descubra las propiedades más prestigiosas del mercado con Bardial Inmobiliaria.</p>
 </div>
 <a href="#coleccion" class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-opacity">
 <span class="text-[10px] uppercase font-bold text-white tracking-[0.3em]">Explorar</span>
@@ -60,9 +32,7 @@
 <a href="detalles.php?id=<?php echo $p['id']; ?>" class="luxury-card group bg-surface border border-outline-variant/15 transition-all duration-500 hover:shadow-2xl hover:border-secondary-fixed-dim">
 <div class="relative overflow-hidden aspect-[4/5]">
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="<?php echo htmlspecialchars($p['img']); ?>" alt="<?php echo htmlspecialchars($p['location']); ?>"/>
-<?php if ($p['badge']): ?>
-<div class="absolute top-0 right-0 bg-secondary-fixed-dim text-brand-navy font-label-md text-[12px] font-bold px-4 py-2 uppercase"><?php echo htmlspecialchars($p['badge']); ?></div>
-<?php endif; ?>
+
 </div>
 <div class="p-8">
 <p class="text-brand-navy dark:text-surface-variant font-display-lg text-headline-md mb-2"><?php echo htmlspecialchars($p['price']); ?></p>

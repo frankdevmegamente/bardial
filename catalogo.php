@@ -171,7 +171,7 @@ include 'includes/header.php'; ?>
 <div class="bg-surface dark:bg-surface-dark group hover:shadow-[0_20px_60px_rgba(8,28,39,0.12)] dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.5)] border border-outline-variant/15 hover:border-secondary-fixed-dim transition-all duration-500 flex flex-col">
 <a href="detalles.php?id=<?php echo $p['id']; ?>" class="relative overflow-hidden aspect-[4/3]">
 <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="<?php echo htmlspecialchars($p['img']); ?>" alt="<?php echo htmlspecialchars($p['location']); ?>"/>
-<?php if ($p['badge']): ?><div class="absolute top-4 right-4 bg-secondary-fixed-dim text-brand-navy px-4 py-1.5 font-label-md text-label-md font-bold uppercase"><?php echo htmlspecialchars($p['badge']); ?></div><?php endif; ?>
+
 <?php if (!empty($p['video'])): ?><div class="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white flex items-center gap-2 px-4 py-2 font-label-md text-[12px] uppercase tracking-wider"><span class="material-symbols-outlined text-[18px] text-secondary-fixed-dim" style="font-variation-settings: 'FILL' 1;">play_circle</span> Video Tour</div><?php endif; ?>
 </a>
 <a href="detalles.php?id=<?php echo $p['id']; ?>" class="p-8 flex-1 flex flex-col <?php echo !empty($p['sold']) ? 'opacity-80' : ''; ?>">

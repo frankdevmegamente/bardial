@@ -7,7 +7,6 @@ $properties = getAllProperties();
 $total = count($properties);
 $sold = count(array_filter($properties, fn($p) => !empty($p['sold'])));
 $available = $total - $sold;
-$withBadge = count(array_filter($properties, fn($p) => !empty($p['badge'])));
 $recent = array_slice($properties, -3);
 
 $prices = array_map(fn($p) => (float)($p['price_value'] ?? 0), $properties);
@@ -35,7 +34,7 @@ include __DIR__ . '/includes/header.php';
 <h2 class="fw-bold mb-1" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.4rem;">Bienvenido</h2>
 <p class="text-muted small mb-0">Resumen general del portafolio de propiedades</p>
 </div>
-<a href="create.php" class="btn btn-gold btn-sm px-4"><i class="bi bi-plus-lg me-1"></i> Añadir propiedad</a>
+<a href="create.php" class="btn btn-gold btn-sm px-4" title="Añadir propiedad" aria-label="Añadir propiedad"><i class="bi bi-plus-lg me-1"></i> Añadir propiedad</a>
 </div>
 
 <!-- Stats -->
@@ -83,20 +82,6 @@ include __DIR__ . '/includes/header.php';
 </div>
 </div>
 
-<div class="col-6 col-xl-3">
-<div class="card stat-card">
-<div class="card-body p-4">
-<div class="d-flex align-items-start gap-3">
-<div class="icon-wrap" style="background:#fef3d6;"><i class="bi bi-tags" style="color:#d97706;"></i></div>
-<div class="flex-grow-1 min-w-0">
-<div class="stat-value"><?php echo $withBadge; ?></div>
-<div class="stat-label">Con etiqueta</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
 </div>
 
 <!-- Bottom row: Recent + Quick info -->
@@ -107,7 +92,7 @@ include __DIR__ . '/includes/header.php';
 <div class="card table-card h-100">
 <div class="card-header d-flex align-items-center justify-content-between">
 <h5 class="mb-0"><i class="bi bi-clock-history me-2" style="color:var(--gold);"></i>Últimas propiedades añadidas</h5>
-<a href="properties.php" class="btn btn-outline-modern btn-sm">Ver todas</a>
+<a href="properties.php" class="btn btn-outline-modern btn-sm" title="Ver todas las propiedades" aria-label="Ver todas las propiedades"><i class="bi bi-list-ul me-1"></i> Ver todas</a>
 </div>
 <div class="card-body p-0">
 <?php if (empty($recent)): ?>
@@ -164,14 +149,11 @@ include __DIR__ . '/includes/header.php';
 <span class="text-muted small">Tasa de disponibilidad</span>
 <span class="fw-bold"><?php echo $total > 0 ? round(($available / $total) * 100) : 0; ?>%</span>
 </div>
-<div class="d-flex justify-content-between align-items-center">
-<span class="text-muted small">Propiedades con badge</span>
-<span class="fw-bold"><?php echo $withBadge; ?> / <?php echo $total; ?></span>
-</div>
+
 </div>
 </div>
 <div class="card-footer bg-white border-0 pt-0 pb-3 px-3">
-<a href="properties.php" class="btn btn-gold w-100 btn-sm"><i class="bi bi-building me-1"></i> Gestionar propiedades</a>
+<a href="properties.php" class="btn btn-gold w-100 btn-sm" title="Gestionar propiedades" aria-label="Gestionar propiedades"><i class="bi bi-building me-1"></i> Gestionar propiedades</a>
 </div>
 </div>
 </div>

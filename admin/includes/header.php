@@ -426,6 +426,17 @@ body {
 <i class="bi bi-plus-circle-fill"></i> Añadir Propiedad
 </a>
 </div>
+<div class="nav-section">Herramientas</div>
+<div class="nav-item">
+<a class="nav-link <?php echo $activePage === 'lonas' ? 'active' : ''; ?>" href="lonas.php">
+<i class="bi bi-aspect-ratio"></i> Lonas
+</a>
+</div>
+<div class="nav-item">
+<a class="nav-link <?php echo $activePage === 'qr' ? 'active' : ''; ?>" href="qr.php">
+<i class="bi bi-qr-code-scan"></i> Códigos QR
+</a>
+</div>
 </nav>
 <div class="sidebar-footer">
 <a class="nav-link" href="../index.php" target="_blank">
@@ -447,7 +458,7 @@ body {
 <div class="topbar-user">
 <span class="d-none d-md-inline text-muted small fw-medium"><?php echo htmlspecialchars($_SESSION['admin_user'] ?? 'Admin'); ?></span>
 <div class="avatar"><?php echo strtoupper(($_SESSION['admin_user'] ?? 'A')[0]); ?></div>
-<a href="logout.php" class="btn btn-outline-modern btn-sm px-3 d-none d-md-inline-flex">
+<a href="logout.php" class="btn btn-outline-modern btn-sm px-3 d-none d-md-inline-flex" title="Cerrar sesión" aria-label="Cerrar sesión">
 <i class="bi bi-box-arrow-right me-1"></i> Salir
 </a>
 </div>

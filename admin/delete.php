@@ -50,16 +50,13 @@ include __DIR__ . '/includes/header.php';
 
 <p class="fw-semibold mb-1" style="font-size:1.05rem;"><?php echo htmlspecialchars($property['location']); ?></p>
 <p class="text-muted mb-0"><?php echo htmlspecialchars($property['price']); ?></p>
-<?php if ($property['badge']): ?>
-<span class="badge badge-gold rounded-pill mt-2"><?php echo htmlspecialchars($property['badge']); ?></span>
-<?php endif; ?>
 
 <div class="d-flex justify-content-center gap-3 mt-4">
-<a href="delete.php?id=<?php echo $id; ?>&confirm=1" class="btn btn-danger-modern px-4">
+<a href="delete.php?id=<?php echo $id; ?>&confirm=1" class="btn btn-danger-modern px-4" title="Confirmar eliminación" aria-label="Confirmar eliminación">
 <i class="bi bi-trash me-1"></i> Sí, eliminar
 </a>
-<a href="index.php" class="btn btn-outline-modern px-4">
-<i class="bi bi-x me-1"></i> Cancelar
+<a href="index.php" class="btn btn-outline-modern px-4" title="Cancelar" aria-label="Cancelar">
+<i class="bi bi-x-lg me-1"></i> Cancelar
 </a>
 </div>
 

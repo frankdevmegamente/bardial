@@ -3,12 +3,24 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 requireAdmin();
 
-$allServices = [
-    'Alberca', 'Alberca Infinity', 'Vista al Mar', 'Seguridad 24h',
-    'Estacionamiento Privado', 'Roof Garden', 'Gimnasio', 'Spa',
-    'Jardín', 'Chimenea', 'Casa de Huéspedes', 'Cancha de Tenis',
-    'Muelle Privado', 'Helipuerto', 'Bodega de Vinos', 'Palapa', 'Tinaja',
+$serviceGroups = [
+    'Casa residencial' => ['Alberca', 'Jardín', 'Terraza', 'Cocina integral', 'Seguridad 24h', 'Estacionamiento', 'Roof Garden', 'Chimenea', 'Cuarto de servicio', 'Aire acondicionado', 'Cisterna', 'Estudio'],
+    'Bodega' => ['Acceso para trailers', 'Andén de carga', 'Energía trifásica', 'Oficinas', 'Seguridad 24h', 'Estacionamiento', 'Área de maniobras', 'Altura libre', 'Rampa de carga', 'Vigilancia', 'Montacargas', 'Patio de maniobras'],
+    'local comercial' => ['Ubicación céntrica', 'Aire acondicionado', 'Estacionamiento', 'Seguridad', 'Área de carga', 'Fachada de cristal', 'Sanitarios', 'Bodega', 'Acceso peatonal', 'Acceso vehicular', 'Flujo peatonal', 'Uso de suelo comercial'],
+    'Departamento' => ['Elevador', 'Seguridad 24h', 'Alberca', 'Gimnasio', 'Roof Garden', 'Estacionamiento', 'Balcón', 'Vista panorámica', 'Área de lavado', 'Portón eléctrico', 'Amenidades', 'Mantenimiento incluido', 'Cocina integral', 'Aire acondicionado'],
 ];
+$allServices = [];
+foreach ($serviceGroups as $g) {
+    foreach ($g as $s) {
+        if (!in_array($s, $allServices, true)) $allServices[] = $s;
+    }
+}
+$serviceTypeMap = [];
+foreach ($serviceGroups as $type => $services) {
+    foreach ($services as $s) {
+        $serviceTypeMap[$s][] = $type;
+    }
+}
 
 $id = (int)($_GET['id'] ?? 0);
 $property = getPropertyById($id);
@@ -49,28 +61,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mainImg = $uploadedImages[0];
         $imagesStr = implode(', ', $uploadedImages);
     } else {
-        $mainImg = trim($_POST['img_url'] ?? '');
+        $mainImg = '';
         $imagesStr = trim($_POST['existing_images'] ?? '');
     }
 
     $videoVal = trim($_POST['video'] ?? '');
 
+    $priceText = trim($_POST['price'] ?? '');
+    $priceValue = preg_replace('/[^\d.]/', '', $priceText);
     $data = [
-        'price'       => trim($_POST['price'] ?? ''),
-        'price_value' => $_POST['price_value'] ?? '',
-        'location'    => trim($_POST['location'] ?? ''),
-        'type'        => trim($_POST['type'] ?? ''),
-        'city'        => trim($_POST['city'] ?? ''),
-        'bed'         => $_POST['bed'] ?? 0,
-        'bath'        => $_POST['bath'] ?? 0,
-        'sqm'         => $_POST['sqm'] ?? 0,
-        'services'    => implode(', ', $selectedServices),
-        'description' => trim($_POST['description'] ?? ''),
-        'badge'       => trim($_POST['badge'] ?? ''),
-        'sold'        => !empty($_POST['sold']),
-        'video'       => $videoVal,
-        'img'         => $mainImg ?: $property['img'],
-        'images'      => $imagesStr ?: $property['images'] ?? null,
+        'price'             => $priceText,
+        'price_value'       => $priceValue,
+        'location'          => trim($_POST['location'] ?? ''),
+        'type'              => trim($_POST['type'] ?? ''),
+        'operation'         => trim($_POST['operation'] ?? ''),
+        'city'              => trim($_POST['city'] ?? ''),
+        'bed'               => $_POST['bed'] ?? 0,
+        'bath'              => $_POST['bath'] ?? 0,
+        'sqm'               => $_POST['sqm'] ?? 0,
+        'construction_sqm'  => $_POST['construction_sqm'] ?? 0,
+        'services'          => implode(', ', $selectedServices),
+        'description'       => trim($_POST['description'] ?? ''),
+        'sold'              => !empty($property['sold']),
+        'video'             => $videoVal,
+        'img'               => $mainImg ?: $property['img'],
+        'images'            => $imagesStr ?: $property['images'] ?? null,
     ];
 
     if ($data['price'] === '' || $data['location'] === '') {
@@ -126,32 +141,32 @@ include __DIR__ . '/includes/header.php';
 <input class="form-control" id="location" name="location" type="text" required value="<?php echo htmlspecialchars($property['location']); ?>" placeholder="Ej: Polanco, CDMX">
 <small class="text-muted">Esta dirección se usará en el mapa de Google Maps en la página de la propiedad.</small>
 </div>
-<div class="col-md-3">
+<div class="col-md-4">
 <label class="form-label" for="type">Tipo de propiedad</label>
 <select class="form-select" id="type" name="type">
 <option value="">Seleccionar...</option>
-<option value="Casa Residencial" <?php echo ($property['type'] ?? '') === 'Casa Residencial' ? 'selected' : ''; ?>>Casa Residencial</option>
-<option value="Villa" <?php echo ($property['type'] ?? '') === 'Villa' ? 'selected' : ''; ?>>Villa</option>
-<option value="Mansión" <?php echo ($property['type'] ?? '') === 'Mansión' ? 'selected' : ''; ?>>Mansión</option>
-<option value="Penthouse" <?php echo ($property['type'] ?? '') === 'Penthouse' ? 'selected' : ''; ?>>Penthouse</option>
-<option value="Departamento Premium" <?php echo ($property['type'] ?? '') === 'Departamento Premium' ? 'selected' : ''; ?>>Departamento Premium</option>
-<option value="Hacienda" <?php echo ($property['type'] ?? '') === 'Hacienda' ? 'selected' : ''; ?>>Hacienda</option>
-<option value="Casona Colonial" <?php echo ($property['type'] ?? '') === 'Casona Colonial' ? 'selected' : ''; ?>>Casona Colonial</option>
-<option value="Casa de Playa" <?php echo ($property['type'] ?? '') === 'Casa de Playa' ? 'selected' : ''; ?>>Casa de Playa</option>
+<?php foreach (['Casa residencial', 'Bodega', 'local comercial', 'Departamento'] as $t): ?>
+<option value="<?php echo htmlspecialchars($t); ?>" <?php echo ($property['type'] ?? '') === $t ? 'selected' : ''; ?>><?php echo htmlspecialchars($t); ?></option>
+<?php endforeach; ?>
 </select>
 </div>
-<div class="col-md-3">
+<div class="col-md-4">
+<label class="form-label" for="operation">Tipo de operación</label>
+<select class="form-select" id="operation" name="operation">
+<option value="">Seleccionar...</option>
+<option value="Venta" <?php echo ($property['operation'] ?? '') === 'Venta' ? 'selected' : ''; ?>>Venta</option>
+<option value="Renta" <?php echo ($property['operation'] ?? '') === 'Renta' ? 'selected' : ''; ?>>Renta</option>
+</select>
+</div>
+<div class="col-md-4">
 <label class="form-label" for="city">Ciudad</label>
 <input class="form-control" id="city" name="city" type="text" value="<?php echo htmlspecialchars($property['city'] ?? ''); ?>" placeholder="Escribe una ciudad de México...">
 <small class="text-muted">Comienza a escribir para ver sugerencias.</small>
 </div>
 <div class="col-md-6">
-<label class="form-label" for="price">Texto del precio <span class="text-danger">*</span></label>
+<label class="form-label" for="price">Precio <span class="text-danger">*</span></label>
 <input class="form-control" id="price" name="price" type="text" required value="<?php echo htmlspecialchars($property['price']); ?>" placeholder="Ej: $12,500,000 MXN">
-</div>
-<div class="col-md-6">
-<label class="form-label" for="price_value">Precio numérico (para filtros)</label>
-<input class="form-control" id="price_value" name="price_value" type="number" step="0.01" value="<?php echo htmlspecialchars($property['price_value'] ?? ''); ?>" placeholder="Ej: 12500000">
+<small class="text-muted">Se extraerá el valor numérico automáticamente para filtros.</small>
 </div>
 
 <!-- Services as checkboxes -->
@@ -159,7 +174,7 @@ include __DIR__ . '/includes/header.php';
 <label class="form-label">Servicios</label>
 <div class="row g-2">
 <?php foreach ($allServices as $svc): ?>
-<div class="col-6 col-md-4 col-lg-3">
+<div class="col-6 col-md-4 col-lg-3 service-item" data-types="<?php echo htmlspecialchars(implode(',', $serviceTypeMap[$svc] ?? [])); ?>">
 <div class="form-check">
 <input class="form-check-input" id="svc_<?php echo md5($svc); ?>" name="services[]" type="checkbox" value="<?php echo htmlspecialchars($svc); ?>" <?php echo in_array($svc, $existingServices) ? 'checked' : ''; ?>>
 <label class="form-check-label small" for="svc_<?php echo md5($svc); ?>"><?php echo htmlspecialchars($svc); ?></label>
@@ -175,7 +190,7 @@ include __DIR__ . '/includes/header.php';
 </div>
 
 <!-- Multiple image upload -->
-<div class="col-md-6">
+<div class="col-md-12">
 <label class="form-label">Imágenes actuales</label>
 <div class="d-flex flex-wrap gap-2 mb-2">
 <?php foreach ($existingImages as $ei): ?>
@@ -187,53 +202,35 @@ include __DIR__ . '/includes/header.php';
 <label class="form-label" for="img_files">Subir nuevas imágenes (reemplazan las actuales)</label>
 <input class="form-control form-control-sm" id="img_files" name="img_files[]" type="file" accept="image/*" multiple>
 <small class="text-muted">Formatos: JPG, PNG, WebP, AVIF. Si subes archivos reemplazarán todas las imágenes.</small>
-</div>
-<div class="col-md-6">
-<label class="form-label" for="img_url">O usar URL de imagen principal <span class="text-danger">*</span></label>
-<input class="form-control" id="img_url" name="img_url" type="text" value="<?php echo htmlspecialchars($property['img']); ?>" placeholder="https://... o uploads/archivo.jpg">
-<small class="text-muted">La URL se usará si no subes archivos.</small>
+<div id="imgPreview" class="d-flex flex-wrap gap-2 mt-2"></div>
 </div>
 
-<div class="col-md-4">
+<div class="col-md-3">
 <label class="form-label" for="bed">Dormitorios</label>
 <input class="form-control" id="bed" name="bed" type="number" min="0" value="<?php echo (int)$property['bed']; ?>">
 </div>
-<div class="col-md-4">
+<div class="col-md-3">
 <label class="form-label" for="bath">Baños</label>
 <input class="form-control" id="bath" name="bath" type="number" min="0" value="<?php echo (int)$property['bath']; ?>">
 </div>
-<div class="col-md-4">
+<div class="col-md-3">
 <label class="form-label" for="sqm">Metros cuadrados</label>
 <input class="form-control" id="sqm" name="sqm" type="text" inputmode="numeric" pattern="[0-9]*" value="<?php echo (int)$property['sqm']; ?>" placeholder="Ej: 320">
 </div>
-<div class="col-md-6">
-<label class="form-label" for="badge">Etiqueta (badge)</label>
-<select class="form-select" id="badge" name="badge">
-<option value="">Ninguna</option>
-<option value="Exclusivo" <?php echo ($property['badge'] ?? '') === 'Exclusivo' ? 'selected' : ''; ?>>Exclusivo</option>
-<option value="Nuevo" <?php echo ($property['badge'] ?? '') === 'Nuevo' ? 'selected' : ''; ?>>Nuevo</option>
-<option value="Inversión" <?php echo ($property['badge'] ?? '') === 'Inversión' ? 'selected' : ''; ?>>Inversión</option>
-<option value="Vendido" <?php echo ($property['badge'] ?? '') === 'Vendido' ? 'selected' : ''; ?>>Vendido</option>
-<option value="Destacado" <?php echo ($property['badge'] ?? '') === 'Destacado' ? 'selected' : ''; ?>>Destacado</option>
-<option value="Oportunidad" <?php echo ($property['badge'] ?? '') === 'Oportunidad' ? 'selected' : ''; ?>>Oportunidad</option>
-<option value="Premium" <?php echo ($property['badge'] ?? '') === 'Premium' ? 'selected' : ''; ?>>Premium</option>
-<option value="En Obra" <?php echo ($property['badge'] ?? '') === 'En Obra' ? 'selected' : ''; ?>>En Obra</option>
-</select>
+<div class="col-md-3">
+<label class="form-label" for="construction_sqm">Metros de construcción</label>
+<input class="form-control" id="construction_sqm" name="construction_sqm" type="text" inputmode="numeric" pattern="[0-9]*" value="<?php echo (int)($property['construction_sqm'] ?? 0); ?>" placeholder="Ej: 280">
 </div>
+
 <div class="col-12">
 <label class="form-label">Video</label>
 <?php $currentVideo = $property['video'] ?? ''; include __DIR__ . '/../includes/upload-video-ui.php'; ?>
 <small class="text-muted">Arrastra o haz clic para subir un video sin límite de tamaño.</small>
 </div>
-<div class="col-12">
-<div class="form-check">
-<input class="form-check-input" id="sold" name="sold" type="checkbox" value="1" <?php echo !empty($property['sold']) ? 'checked' : ''; ?>>
-<label class="form-check-label small" for="sold">Marcar como vendida</label>
-</div>
-</div>
+
 <div class="col-12 d-flex gap-2 pt-2">
-<button class="btn btn-gold px-4" type="submit"><i class="bi bi-check-lg me-1"></i> Guardar cambios</button>
-<a class="btn btn-outline-modern px-4" href="index.php">Cancelar</a>
+<button class="btn btn-gold px-4" type="submit" title="Guardar cambios" aria-label="Guardar cambios"><i class="bi bi-check-lg me-1"></i> Guardar cambios</button>
+<a class="btn btn-outline-modern px-4" href="index.php" title="Cancelar" aria-label="Cancelar"><i class="bi bi-x-lg me-1"></i>Cancelar</a>
 </div>
 </div>
 </form>
@@ -241,5 +238,49 @@ include __DIR__ . '/includes/header.php';
 </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var typeSelect = document.getElementById('type');
+    function filterServices() {
+        var type = typeSelect ? typeSelect.value : '';
+        document.querySelectorAll('.service-item').forEach(function(el) {
+            var types = (el.getAttribute('data-types') || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+            var show = !type || types.length === 0 || types.indexOf(type) !== -1;
+            el.style.display = show ? '' : 'none';
+            if (!show) {
+                var cb = el.querySelector('input[type="checkbox"]');
+                if (cb) cb.checked = false;
+            }
+        });
+    }
+    if (typeSelect) {
+        typeSelect.addEventListener('change', filterServices);
+        filterServices();
+    }
+
+    var fileInput = document.getElementById('img_files');
+    var preview = document.getElementById('imgPreview');
+    if (fileInput && preview) {
+        fileInput.addEventListener('change', function() {
+            preview.innerHTML = '';
+            Array.from(fileInput.files || []).forEach(function(file) {
+                if (!file.type || file.type.indexOf('image/') !== 0) return;
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '96px';
+                    img.style.height = '72px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '8px';
+                    img.style.border = '1px solid #e5e7eb';
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    }
+});
+</script>
 <?php include __DIR__ . '/../includes/autocomplete-location.php'; ?>
 <?php include __DIR__ . '/includes/footer.php'; ?>
