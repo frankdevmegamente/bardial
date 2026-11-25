@@ -1,0 +1,100 @@
+/* Detalles — estilos de página extraídos desde detalles.php */
+.fill-icon { font-variation-settings: 'FILL' 1; }
+.sticky-sidebar { top: 96px; max-height: calc(100vh - 112px); overflow-y: auto; scrollbar-width: thin; }
+
+/* Collage grid */
+.collage {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-auto-rows: 220px;
+  gap: 6px;
+}
+.collage-item { position: relative; overflow: hidden; cursor: pointer; }
+.collage-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s ease;
+}
+.collage-item:hover img { transform: scale(1.05); }
+.collage-item .overlay-count {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,20,30,.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  transition: opacity .3s;
+}
+.collage-item .overlay-count:hover { opacity: .9; }
+.collage-main { grid-row: span 2; }
+
+/* Lightbox */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,.92);
+  align-items: center;
+  justify-content: center;
+}
+.lightbox.active { display: flex; }
+.lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: #fff;
+  font-size: 2.5rem;
+  cursor: pointer;
+  opacity: .7;
+  transition: opacity .2s;
+  background: none;
+  border: none;
+  line-height: 1;
+}
+.lightbox-close:hover { opacity: 1; }
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 2.5rem;
+  cursor: pointer;
+  opacity: .6;
+  transition: opacity .2s;
+  background: none;
+  border: none;
+  padding: 10px;
+}
+.lightbox-nav:hover { opacity: 1; }
+.lightbox-prev { left: 20px; }
+.lightbox-next { right: 20px; }
+.lightbox-counter {
+  position: absolute;
+  bottom: 30px;
+  color: rgba(255,255,255,.6);
+  font-size: .9rem;
+  letter-spacing: 2px;
+}
+
+@media (max-width: 1023px) {
+  .collage { grid-template-columns: 1fr 1fr; grid-auto-rows: 180px; }
+  .collage-main { grid-row: span 1; grid-column: span 2; height: 260px; }
+}
+@media (max-width: 639px) {
+  .collage { grid-template-columns: 1fr; grid-auto-rows: 200px; }
+  .collage-main { grid-column: span 1; height: auto; }
+}
+
+/* Video modal */
+.video-modal-overlay.open { display: flex !important; }

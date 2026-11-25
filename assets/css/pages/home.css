@@ -1,0 +1,37 @@
+/* Home — estilos de página */
+.hero-arch {
+  border-radius: var(--radius-arch-top) var(--radius-arch-top) 1rem 1rem;
+}
+@media (min-width: 640px) {
+  .hero-arch { border-radius: var(--radius-arch-top-sm) var(--radius-arch-top-sm) 1.2rem 1.2rem; }
+}
+
+/* Barra de categorías */
+.cat-bar-btn { transition: color 180ms; }
+.cat-bar-btn:hover { color: var(--color-gold-text) !important; }
+.cat-bar-btn:focus-visible,
+#catalogClose:focus-visible,
+.cat-pill:focus-visible,
+.catalog-contact:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 4px; }
+
+#catalogClose:hover { background: var(--color-beige-icon); }
+
+/* Tarjetas del modal */
+.catalog-label {
+  position: absolute;
+  top: 12px; left: 12px;
+  background: rgba(247,244,237,.95);
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 12px;
+  color: var(--color-navy);
+}
+.catalog-contact {
+  color: var(--color-navy);
+  text-decoration: underline;
+  text-decoration-color: var(--color-gold-line);
+  text-underline-offset: 8px;
+  transition: color 180ms;
+}
+.catalog-contact:hover { color: var(--color-gold-text); }
+.catalog-contact svg { transform: rotate(-45deg); }

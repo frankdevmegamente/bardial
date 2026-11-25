@@ -1,0 +1,7 @@
+/* Global base styles */
+body.dialog-open { overflow: hidden; }
+
+img { max-width: 100%; height: auto; }
+
+/* Smooth anchor offset for header */
+section[id] { scroll-margin-top: 96px; }

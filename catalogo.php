@@ -1,5 +1,6 @@
-<?php $pageTitle = 'Bardial Inmobiliaria | Catálogo Exclusivo de Propiedades'; $activePage = 'catalogo'; $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : ''; $sortBy = isset($_GET['sort']) ? $_GET['sort'] : 'recent';
+<?php $pageTitle = 'Bardial Inmobiliaria | Catálogo Exclusivo de Propiedades'; $activePage = 'catalogo'; $pageCss = 'catalogo'; $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : ''; $sortBy = isset($_GET['sort']) ? $_GET['sort'] : 'recent';
 include 'includes/properties.php';
+include 'includes/categories.php';
 
 // Filter state
 $filterType    = isset($_GET['type']) ? (array)$_GET['type'] : [];
@@ -14,7 +15,7 @@ $properties = array_filter($properties, function($p) use ($searchQuery, $filterT
     if ($searchQuery && stripos($p['location'], $searchQuery) === false) {
         return false;
     }
-    if (!empty($filterType) && !in_array($p['type'], $filterType)) {
+    if (!empty($filterType) && !in_array(bardial_category_for($p['type'] ?? ''), $filterType)) {
         return false;
     }
     if ($filterPriceMin > 0 && (float)($p['price_value'] ?? 0) < $filterPriceMin) {
@@ -62,234 +63,247 @@ function checkedFilter(string $name, string $value): string {
     $arr = isset($_GET[$name]) ? (array)$_GET[$name] : [];
     return in_array($value, $arr) ? 'checked' : '';
 }
+
+$allCategories = BARDIAL_CATEGORIES;
+$allServices = ['Alberca', 'Alberca Infinity', 'Vista al Mar', 'Seguridad 24h', 'Estacionamiento Privado', 'Roof Garden', 'Gimnasio', 'Spa', 'Jardín', 'Chimenea', 'Casa de Huéspedes', 'Cancha de Tenis', 'Muelle Privado', 'Helipuerto', 'Bodega de Vinos', 'Palapa', 'Tinaja'];
+
 include 'includes/head.php';
-include 'includes/header.php'; ?>
+include 'includes/header.php';
+?>
 
-<style>
-        .property-card:hover .property-image-overlay { opacity: 1; }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .filter-border { border-bottom: 1px solid rgba(115, 120, 124, 0.2); }
-        input:focus { outline: none !important; border-bottom-width: 2px !important; border-color: #081C27 !important; box-shadow: none !important; }
-        .dark input:focus { border-color: #f8be26 !important; }
-    </style>
-<main class="max-w-[1800px] mx-auto px-margin-mobile md:px-margin-desktop py-28">
+<main class="flex-grow">
+  <div class="container-bardial pt-32 pb-24">
 
-<nav class="flex items-center gap-2 mb-12 text-on-surface-variant/70 font-label-md text-label-md">
-<a class="hover:text-primary transition-colors" href="index.php">Inicio</a>
-<span class="material-symbols-outlined text-[16px]">chevron_right</span>
-<a class="hover:text-primary transition-colors" href="catalogo.php">Propiedades</a>
-<span class="material-symbols-outlined text-[16px]">chevron_right</span>
-<span class="text-primary font-bold">Listados Exclusivos</span>
-</nav>
-<div class="flex flex-col lg:flex-row gap-16">
-<aside class="w-full lg:w-96 flex-shrink-0 space-y-12">
-<form method="get" action="">
-<?php foreach ($_GET as $k => $v): if ($k === 'type' || $k === 'price_min' || $k === 'price_max' || $k === 'bed' || $k === 'sqm_min' || $k === 'sqm_max' || $k === 'services' || $k === 'page') continue; if (is_array($v)): foreach ($v as $vv): ?><input name="<?php echo htmlspecialchars($k); ?>[]" type="hidden" value="<?php echo htmlspecialchars($vv); ?>"><?php endforeach; else: ?><input name="<?php echo htmlspecialchars($k); ?>" type="hidden" value="<?php echo htmlspecialchars($v); ?>"><?php endif; endforeach; ?>
-<div class="border-b-2 border-primary pb-2 mb-6"><h2 class="font-title-lg text-title-lg uppercase tracking-widest text-primary">Filtros</h2></div>
-<div class="space-y-4">
-<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Tipo de Propiedad</label>
-<div class="space-y-2">
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="type[]" type="checkbox" value="Casa Residencial" <?php echo checkedFilter('type', 'Casa Residencial'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Casa Residencial</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="type[]" type="checkbox" value="Villa" <?php echo checkedFilter('type', 'Villa'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Villa</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="type[]" type="checkbox" value="Mansión" <?php echo checkedFilter('type', 'Mansión'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Mansión</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="type[]" type="checkbox" value="Penthouse" <?php echo checkedFilter('type', 'Penthouse'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Penthouse</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="type[]" type="checkbox" value="Departamento Premium" <?php echo checkedFilter('type', 'Departamento Premium'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Departamento Premium</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="type[]" type="checkbox" value="Hacienda" <?php echo checkedFilter('type', 'Hacienda'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Hacienda</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="type[]" type="checkbox" value="Casona Colonial" <?php echo checkedFilter('type', 'Casona Colonial'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Casona Colonial</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="type[]" type="checkbox" value="Casa de Playa" <?php echo checkedFilter('type', 'Casa de Playa'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Casa de Playa</span></label>
-</div>
-</div>
-<div class="space-y-4">
-<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Rango de Precio (MXN)</label>
-<div class="grid grid-cols-2 gap-4">
-<input class="w-full bg-transparent border-0 border-b border-outline-variant dark:border-outline-variant/30 py-2 font-body-md focus:ring-0 dark:text-surface-variant" name="price_min" placeholder="Mín" type="number" value="<?php echo htmlspecialchars($_GET['price_min'] ?? ''); ?>"/>
-<input class="w-full bg-transparent border-0 border-b border-outline-variant dark:border-outline-variant/30 py-2 font-body-md focus:ring-0 dark:text-surface-variant" name="price_max" placeholder="Máx" type="number" value="<?php echo htmlspecialchars($_GET['price_max'] ?? ''); ?>"/>
-</div>
-</div>
-<div class="space-y-4">
-<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Dormitorios</label>
-<div class="flex flex-wrap gap-2">
-<?php foreach ([1,2,3,4] as $b): ?>
-<a href="?<?php echo http_build_query(array_merge($_GET, ['bed' => $b, 'page' => 1])); ?>" class="px-4 py-2 <?php echo ($filterBed === $b) ? 'border-2 border-secondary-fixed-dim text-secondary-fixed-dim font-bold' : 'border border-outline-variant dark:border-outline-variant/30 hover:border-secondary-fixed-dim transition-colors text-on-surface-variant dark:text-surface-variant'; ?> text-label-md font-label-md"><?php echo $b; ?>+</a>
-<?php endforeach; ?>
-<?php if ($filterBed > 0): ?>
-<a href="?<?php echo http_build_query(array_merge($_GET, ['bed' => '', 'page' => 1])); ?>" class="px-4 py-2 text-label-md font-label-md text-on-surface-variant/50 hover:text-error transition-colors">Limpiar</a>
-<?php endif; ?>
-</div>
-</div>
-<div class="space-y-4">
-<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Superficie (m²)</label>
-<div class="grid grid-cols-2 gap-4">
-<input class="w-full bg-transparent border-0 border-b border-outline-variant py-2 font-body-md focus:ring-0" name="sqm_min" placeholder="Desde" type="number" value="<?php echo htmlspecialchars($_GET['sqm_min'] ?? ''); ?>"/>
-<input class="w-full bg-transparent border-0 border-b border-outline-variant py-2 font-body-md focus:ring-0" name="sqm_max" placeholder="Hasta" type="number" value="<?php echo htmlspecialchars($_GET['sqm_max'] ?? ''); ?>"/>
-</div>
-</div>
-<div class="space-y-4">
-<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Servicios</label>
-<div class="space-y-3 max-h-56 overflow-y-auto scrollbar-hide">
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Alberca" <?php echo checkedFilter('services', 'Alberca'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Alberca</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Alberca Infinity" <?php echo checkedFilter('services', 'Alberca Infinity'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Alberca Infinity</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Vista al Mar" <?php echo checkedFilter('services', 'Vista al Mar'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Vista al Mar</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Seguridad 24h" <?php echo checkedFilter('services', 'Seguridad 24h'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Seguridad 24h</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Estacionamiento Privado" <?php echo checkedFilter('services', 'Estacionamiento Privado'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Estacionamiento Privado</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Roof Garden" <?php echo checkedFilter('services', 'Roof Garden'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Roof Garden</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Gimnasio" <?php echo checkedFilter('services', 'Gimnasio'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Gimnasio</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Spa" <?php echo checkedFilter('services', 'Spa'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Spa</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Jardín" <?php echo checkedFilter('services', 'Jardín'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Jardín</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Chimenea" <?php echo checkedFilter('services', 'Chimenea'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Chimenea</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Casa de Huéspedes" <?php echo checkedFilter('services', 'Casa de Huéspedes'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Casa de Huéspedes</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Cancha de Tenis" <?php echo checkedFilter('services', 'Cancha de Tenis'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Cancha de Tenis</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Muelle Privado" <?php echo checkedFilter('services', 'Muelle Privado'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Muelle Privado</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Helipuerto" <?php echo checkedFilter('services', 'Helipuerto'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Helipuerto</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Bodega de Vinos" <?php echo checkedFilter('services', 'Bodega de Vinos'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Bodega de Vinos</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Palapa" <?php echo checkedFilter('services', 'Palapa'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Palapa</span></label>
-<label class="flex items-center gap-3 cursor-pointer group"><input class="w-5 h-5 border-outline-variant text-secondary-fixed-dim focus:ring-0 rounded-none" name="services[]" type="checkbox" value="Tinaja" <?php echo checkedFilter('services', 'Tinaja'); ?>/><span class="font-body-md group-hover:text-primary transition-colors">Tinaja</span></label>
-</div>
-</div>
-<button class="w-full bg-secondary-fixed-dim text-brand-navy py-4 font-label-md text-label-md uppercase tracking-widest font-bold hover:brightness-110 transition-all mt-6" type="submit">Aplicar Filtros</button>
-<?php if (!empty($_GET)): ?>
-<a class="block w-full text-center border border-outline-variant text-on-surface-variant py-4 font-label-md text-label-md uppercase tracking-widest hover:text-error hover:border-error transition-all mt-2" href="catalogo.php">Limpiar Filtros</a>
-<?php endif; ?>
-</form>
-</aside>
-<div class="flex-1">
-<div class="flex flex-col sm:flex-row justify-between items-end sm:items-center mb-12 gap-6">
-<div><?php if ($searchQuery): ?><h1 class="font-headline-md text-headline-md text-primary mb-1"><?php echo $totalProps; ?> Resultados para "<?php echo htmlspecialchars($searchQuery); ?>"</h1><p class="text-on-surface-variant/80 font-body-md">Mostrando propiedades que coinciden con su búsqueda.</p><?php else: ?><h1 class="font-headline-md text-headline-md text-primary mb-1"><?php echo $totalProps; ?> Propiedades Encontradas</h1><p class="text-on-surface-variant/80 font-body-md">Oportunidades de inversión de lujo en los destinos más exclusivos de México.</p><?php endif; ?></div>
-<form method="get" class="flex items-center gap-4 bg-surface-container-low dark:bg-surface-container-dark px-4 py-2">
-<span class="font-label-md text-label-md text-on-surface-variant uppercase whitespace-nowrap">Ordenar por:</span>
-<select name="sort" class="bg-transparent border-none focus:ring-0 font-label-md text-label-md cursor-pointer text-primary font-bold pr-10" onchange="this.form.submit()">
-<option value="recent" <?php echo $sortBy === 'recent' ? 'selected' : ''; ?>>Más Recientes</option>
-<option value="price_asc" <?php echo $sortBy === 'price_asc' ? 'selected' : ''; ?>>Precio: Menor a Mayor</option>
-<option value="price_desc" <?php echo $sortBy === 'price_desc' ? 'selected' : ''; ?>>Precio: Mayor a Menor</option>
-<option value="sqm" <?php echo $sortBy === 'sqm' ? 'selected' : ''; ?>>Metros Cuadrados</option>
-</select>
-<?php foreach ($_GET as $k => $v): if ($k === 'sort' || $k === 'page') continue; if (is_array($v)): foreach ($v as $vv): ?><input name="<?php echo htmlspecialchars($k); ?>[]" type="hidden" value="<?php echo htmlspecialchars($vv); ?>"><?php endforeach; else: ?><input name="<?php echo htmlspecialchars($k); ?>" type="hidden" value="<?php echo htmlspecialchars($v); ?>"><?php endif; endforeach; ?>
-</form>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12">
-<?php foreach ($pageProperties as $p): ?>
-<div class="bg-surface dark:bg-surface-dark group hover:shadow-[0_20px_60px_rgba(8,28,39,0.12)] dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.5)] border border-outline-variant/15 hover:border-secondary-fixed-dim transition-all duration-500 flex flex-col">
-<a href="detalles.php?id=<?php echo $p['id']; ?>" class="relative overflow-hidden aspect-[4/3]">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="<?php echo htmlspecialchars($p['img']); ?>" alt="<?php echo htmlspecialchars($p['location']); ?>"/>
+    <nav class="flex items-center gap-2 mb-10 text-xs" style="color:var(--color-gray-6);" aria-label="Ruta de navegación">
+      <a class="hover:text-[var(--color-gold-text)] transition-colors" href="index.php">Inicio</a>
+      <span class="text-[10px]">›</span>
+      <a class="hover:text-[var(--color-gold-text)] transition-colors" href="catalogo.php">Propiedades</a>
+      <span class="text-[10px]">›</span>
+      <span style="color:var(--color-navy);">Listados exclusivos</span>
+    </nav>
 
-<?php if (!empty($p['video'])): ?><div class="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white flex items-center gap-2 px-4 py-2 font-label-md text-[12px] uppercase tracking-wider"><span class="material-symbols-outlined text-[18px] text-secondary-fixed-dim" style="font-variation-settings: 'FILL' 1;">play_circle</span> Video Tour</div><?php endif; ?>
-</a>
-<a href="detalles.php?id=<?php echo $p['id']; ?>" class="p-8 flex-1 flex flex-col <?php echo !empty($p['sold']) ? 'opacity-80' : ''; ?>">
-<div class="flex justify-between items-start mb-3">
-<h3 class="font-headline-md text-headline-md text-primary"><?php echo htmlspecialchars($p['price']); ?></h3>
-<button class="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors text-2xl" onclick="event.preventDefault()">favorite</button>
-</div>
-<p class="font-body-md text-on-surface-variant mb-1 uppercase tracking-wider"><?php echo htmlspecialchars($p['location']); ?></p>
-<?php if (!empty($p['type'])): ?>
-<p class="font-label-md text-label-md text-secondary-fixed-dim mb-4"><?php echo htmlspecialchars($p['type']); ?></p>
-<?php endif; ?>
-<?php if (!empty($p['services'])): ?>
-<?php $svcList = array_map('trim', explode(',', $p['services'])); ?>
-<div class="flex flex-wrap gap-2 mb-5">
-<?php foreach (array_slice($svcList, 0, 3) as $svc): ?>
-<span class="bg-brand-navy/5 dark:bg-surface-variant/10 text-on-surface-variant dark:text-surface-variant px-3 py-1 font-label-md text-[11px] uppercase tracking-wider"><?php echo htmlspecialchars($svc); ?></span>
-<?php endforeach; ?>
-<?php if (count($svcList) > 3): ?>
-<span class="text-on-surface-variant/60 font-label-md text-[11px]">+<?php echo count($svcList) - 3; ?></span>
-<?php endif; ?>
-</div>
-<?php endif; ?>
-<div class="mt-auto pt-5 border-t border-outline-variant/20 flex justify-between items-center text-on-surface-variant">
-<div class="flex items-center gap-5">
-<span class="flex items-center gap-1.5 font-label-md"><span class="material-symbols-outlined text-xl">bed</span> <?php echo (int)$p['bed']; ?></span>
-<span class="flex items-center gap-1.5 font-label-md"><span class="material-symbols-outlined text-xl">bathtub</span> <?php echo (int)$p['bath']; ?></span>
-<span class="flex items-center gap-1.5 font-label-md"><span class="material-symbols-outlined text-xl">square_foot</span> <?php echo (int)$p['sqm']; ?>m²</span>
-</div>
-<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
-</div>
-</a>
-</div>
-<?php endforeach; ?>
-</div>
-<div class="mt-20 flex justify-center items-center gap-4">
-<?php if ($totalPages > 1): ?>
-<?php $prevPage = $page - 1; $nextPage = $page + 1; $filterParams = $_GET; unset($filterParams['page']); $queryString = $filterParams ? '&' . http_build_query($filterParams) : ''; ?>
-<a class="p-3 border border-outline-variant hover:border-secondary-fixed-dim disabled:opacity-30 <?php echo $page <= 1 ? 'pointer-events-none opacity-30' : ''; ?>" href="?page=<?php echo $prevPage . $queryString; ?>"><span class="material-symbols-outlined">chevron_left</span></a>
-<div class="flex items-center gap-2">
-<?php for ($i = 1; $i <= $totalPages; $i++): ?>
-<a class="w-12 h-12 flex items-center justify-center <?php echo $i === $page ? 'border-2 border-secondary-fixed-dim text-secondary-fixed-dim font-bold' : 'border border-outline-variant dark:border-outline-variant/30 hover:border-secondary-fixed-dim transition-colors text-on-surface-variant dark:text-surface-variant'; ?>" href="?page=<?php echo $i . $queryString; ?>"><?php echo $i; ?></a>
-<?php endfor; ?>
-</div>
-<a class="p-2 border border-outline-variant hover:border-secondary-fixed-dim <?php echo $page >= $totalPages ? 'pointer-events-none opacity-30' : ''; ?>" href="?page=<?php echo $nextPage . $queryString; ?>"><span class="material-symbols-outlined">chevron_right</span></a>
-<?php endif; ?>
-</div>
-</div>
-</div>
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14">
+      <div>
+        <p class="eyebrow">Colección Bardial</p>
+        <h1 class="section-title mt-5">Propiedades</h1>
+        <p class="mt-4 text-sm font-medium" style="color:var(--color-gold-text);" role="status"><?php echo $totalProps; ?> propiedades encontradas</p>
+        <p class="mt-2 max-w-[448px] text-sm leading-6" style="color:var(--color-gray-2);">Oportunidades de inversión de lujo en los destinos más exclusivos de México.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 w-full lg:w-auto">
+        <form method="get" action="" id="searchContainer" class="relative flex-1 lg:w-72">
+          <label class="form-label" for="searchInput">Buscar por ubicación</label>
+          <div class="flex items-center gap-2">
+            <input class="input-line" id="searchInput" name="search" type="search" placeholder="Escribe una ubicación" value="<?php echo htmlspecialchars($searchQuery); ?>"/>
+            <button type="submit" class="shrink-0 w-11 h-11 rounded-full flex items-center justify-center transition-colors" style="background:var(--color-navy-btn);color:#fff;" aria-label="Buscar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            </button>
+          </div>
+          <?php foreach ($_GET as $k => $v): if ($k === 'search' || $k === 'sort' || $k === 'page') continue; if (is_array($v)): foreach ($v as $vv): ?><input name="<?php echo htmlspecialchars($k); ?>[]" type="hidden" value="<?php echo htmlspecialchars($vv); ?>"><?php endforeach; else: ?><input name="<?php echo htmlspecialchars($k); ?>" type="hidden" value="<?php echo htmlspecialchars($v); ?>"><?php endif; endforeach; ?>
+        </form>
+        <form method="get" class="w-full sm:w-auto">
+          <label class="form-label" for="sortSelect">Ordenar por</label>
+          <div class="relative">
+            <select id="sortSelect" name="sort" class="input-line appearance-none pr-8 cursor-pointer" onchange="this.form.submit()">
+              <option value="recent" <?php echo $sortBy === 'recent' ? 'selected' : ''; ?>>Más recientes</option>
+              <option value="price_asc" <?php echo $sortBy === 'price_asc' ? 'selected' : ''; ?>>Precio: menor a mayor</option>
+              <option value="price_desc" <?php echo $sortBy === 'price_desc' ? 'selected' : ''; ?>>Precio: mayor a menor</option>
+              <option value="sqm" <?php echo $sortBy === 'sqm' ? 'selected' : ''; ?>>Metros cuadrados</option>
+            </select>
+            <svg class="absolute right-0 bottom-4 pointer-events-none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <?php foreach ($_GET as $k => $v): if ($k === 'sort' || $k === 'page') continue; if (is_array($v)): foreach ($v as $vv): ?><input name="<?php echo htmlspecialchars($k); ?>[]" type="hidden" value="<?php echo htmlspecialchars($vv); ?>"><?php endforeach; else: ?><input name="<?php echo htmlspecialchars($k); ?>" type="hidden" value="<?php echo htmlspecialchars($v); ?>"><?php endif; endforeach; ?>
+        </form>
+      </div>
+    </div>
+
+    <?php if ($searchQuery): ?>
+      <p class="mb-8 text-sm" style="color:var(--color-gray-2);" role="status"><?php echo $totalProps; ?> resultado<?php echo $totalProps === 1 ? '' : 's'; ?> para “<?php echo htmlspecialchars($searchQuery); ?>”</p>
+    <?php endif; ?>
+
+    <div class="flex flex-col lg:flex-row gap-12">
+      <aside class="w-full lg:w-[300px] flex-shrink-0">
+        <form method="get" action="" class="space-y-10">
+          <?php foreach ($_GET as $k => $v): if ($k === 'type' || $k === 'price_min' || $k === 'price_max' || $k === 'bed' || $k === 'sqm_min' || $k === 'sqm_max' || $k === 'services' || $k === 'page') continue; if (is_array($v)): foreach ($v as $vv): ?><input name="<?php echo htmlspecialchars($k); ?>[]" type="hidden" value="<?php echo htmlspecialchars($vv); ?>"><?php endforeach; else: ?><input name="<?php echo htmlspecialchars($k); ?>" type="hidden" value="<?php echo htmlspecialchars($v); ?>"><?php endif; endforeach; ?>
+
+          <div class="pb-4 border-b" style="border-color:var(--color-beige-border);">
+            <h2 class="text-sm font-semibold uppercase" style="letter-spacing:.18em;color:var(--color-navy);">Filtros</h2>
+          </div>
+
+          <fieldset>
+            <legend class="form-label mb-4">Categoría</legend>
+            <div class="space-y-3">
+              <?php foreach ($allCategories as $cat): ?>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                  <input class="filter-checkbox" name="type[]" type="checkbox" value="<?php echo htmlspecialchars($cat); ?>" <?php echo checkedFilter('type', $cat); ?>/>
+                  <span class="text-sm transition-colors group-hover:text-[var(--color-gold-text)]" style="color:var(--color-gray-4);"><?php echo htmlspecialchars($cat); ?></span>
+                </label>
+              <?php endforeach; ?>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="form-label mb-4">Rango de precio (MXN)</legend>
+            <div class="grid grid-cols-2 gap-4">
+              <input class="input-line" name="price_min" placeholder="Mín" type="number" value="<?php echo htmlspecialchars($_GET['price_min'] ?? ''); ?>"/>
+              <input class="input-line" name="price_max" placeholder="Máx" type="number" value="<?php echo htmlspecialchars($_GET['price_max'] ?? ''); ?>"/>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="form-label mb-4">Dormitorios</legend>
+            <div class="flex flex-wrap gap-2">
+              <?php foreach ([1, 2, 3, 4] as $b): ?>
+                <a href="?<?php echo htmlspecialchars(http_build_query(array_merge($_GET, ['bed' => $b, 'page' => 1]))); ?>" class="cat-pill <?php echo $filterBed === $b ? 'active' : ''; ?>"><?php echo $b; ?>+</a>
+              <?php endforeach; ?>
+              <?php if ($filterBed > 0): ?>
+                <a href="?<?php echo htmlspecialchars(http_build_query(array_merge($_GET, ['bed' => '', 'page' => 1]))); ?>" class="cat-pill">Limpiar</a>
+              <?php endif; ?>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="form-label mb-4">Superficie (m²)</legend>
+            <div class="grid grid-cols-2 gap-4">
+              <input class="input-line" name="sqm_min" placeholder="Desde" type="number" value="<?php echo htmlspecialchars($_GET['sqm_min'] ?? ''); ?>"/>
+              <input class="input-line" name="sqm_max" placeholder="Hasta" type="number" value="<?php echo htmlspecialchars($_GET['sqm_max'] ?? ''); ?>"/>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="form-label mb-4">Servicios</legend>
+            <div class="space-y-3 max-h-56 overflow-y-auto scrollbar-hide pr-2">
+              <?php foreach ($allServices as $s): ?>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                  <input class="filter-checkbox" name="services[]" type="checkbox" value="<?php echo htmlspecialchars($s); ?>" <?php echo checkedFilter('services', $s); ?>/>
+                  <span class="text-sm transition-colors group-hover:text-[var(--color-gold-text)]" style="color:var(--color-gray-4);"><?php echo htmlspecialchars($s); ?></span>
+                </label>
+              <?php endforeach; ?>
+            </div>
+          </fieldset>
+
+          <button type="submit" class="btn-primary-pill w-full justify-center">Aplicar filtros <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+          <?php if (!empty($_GET)): ?>
+            <a class="btn-ghost-underline block w-full text-center" href="catalogo.php">Limpiar filtros</a>
+          <?php endif; ?>
+        </form>
+      </aside>
+
+      <div class="flex-1 min-w-0">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <?php foreach ($pageProperties as $p): ?>
+            <a href="detalles.php?id=<?php echo (int)$p['id']; ?>" class="property-card group block <?php echo !empty($p['sold']) ? 'opacity-80' : ''; ?>">
+              <div class="relative h-[300px] overflow-hidden rounded-2xl rounded-tr-[5rem]" style="background:#d8d1c5;">
+                <img src="<?php echo htmlspecialchars($p['img']); ?>" alt="<?php echo htmlspecialchars($p['location']); ?>" class="property-img w-full h-full object-cover"/>
+                <span class="card-label"><?php echo htmlspecialchars(bardial_category_for($p['type'] ?? '')); ?></span>
+                <?php if (!empty($p['sold'])): ?><span class="card-label !top-auto !bottom-5 !left-5" style="background:var(--color-navy);color:#fff;">Vendida</span><?php endif; ?>
+                <?php if (!empty($p['video'])): ?>
+                  <span class="absolute bottom-5 left-5 flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] uppercase tracking-wider" style="background:rgba(9,29,48,.75);color:#fff;"><span class="fill-icon material-symbols-outlined text-[15px]">play_circle</span> Video tour</span>
+                <?php endif; ?>
+                <span class="card-btn absolute bottom-5 right-5"><svg class="arrow-rotate" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+              </div>
+              <div class="px-1 pt-6">
+                <p class="text-xs" style="color:var(--color-gray-7);"><?php echo htmlspecialchars($p['city'] ?: $p['location']); ?></p>
+                <div class="mt-2 flex items-start justify-between gap-4">
+                  <h3 class="font-display text-[26px] leading-tight" style="color:var(--color-navy);"><?php echo htmlspecialchars($p['location']); ?></h3>
+                  <p class="text-sm font-semibold pt-2 whitespace-nowrap" style="color:var(--color-gold-price);"><?php echo htmlspecialchars($p['price']); ?></p>
+                </div>
+                <?php if (!empty($p['services'])): ?>
+                  <?php $svcList = array_map('trim', explode(',', $p['services'])); ?>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    <?php foreach (array_slice($svcList, 0, 3) as $svc): ?>
+                      <span class="text-[11px] px-2.5 py-1 rounded-full" style="background:var(--color-beige-icon);color:var(--color-gray-8);"><?php echo htmlspecialchars($svc); ?></span>
+                    <?php endforeach; ?>
+                    <?php if (count($svcList) > 3): ?><span class="text-[11px]" style="color:var(--color-gray-6);">+<?php echo count($svcList) - 3; ?></span><?php endif; ?>
+                  </div>
+                <?php endif; ?>
+                <div class="mt-4 pt-3 border-t text-xs flex flex-wrap gap-x-5 gap-y-1" style="border-color:var(--color-beige-border);color:var(--color-gray-6);">
+                  <span><?php echo (int)$p['bed']; ?> recámaras</span>
+                  <span><?php echo (int)$p['bath']; ?> baños</span>
+                  <span><?php echo (int)$p['sqm']; ?> m²</span>
+                </div>
+              </div>
+            </a>
+          <?php endforeach; ?>
+        </div>
+
+        <?php if ($totalProps === 0): ?>
+          <div class="empty-state mt-6">
+            <h3 class="font-display text-[30px]" style="color:var(--color-navy);">Sin resultados</h3>
+            <p class="mt-4 text-sm leading-7" style="color:var(--color-gray-2);">No encontramos propiedades con esos filtros. Prueba con otros criterios.</p>
+            <a class="btn-primary-pill mt-8" href="catalogo.php">Ver todas las propiedades</a>
+          </div>
+        <?php endif; ?>
+
+        <?php if ($totalPages > 1): ?>
+          <?php $prevPage = max(1, $page - 1); $nextPage = min($totalPages, $page + 1); $prevDisabled = $page <= 1; $nextDisabled = $page >= $totalPages; $filterParams = $_GET; unset($filterParams['page']); $queryString = $filterParams ? '&amp;' . htmlspecialchars(http_build_query($filterParams)) : ''; ?>
+          <nav class="mt-20 flex flex-wrap justify-center items-center gap-3" aria-label="Paginación">
+            <a class="pagination-btn <?php echo $prevDisabled ? 'pointer-events-none opacity-30' : ''; ?>" href="?page=<?php echo $prevPage . $queryString; ?>" aria-label="Página anterior" <?php echo $prevDisabled ? 'aria-disabled="true" tabindex="-1"' : ''; ?>>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </a>
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+              <a class="pagination-btn <?php echo $i === $page ? 'active' : ''; ?>" href="?page=<?php echo $i . $queryString; ?>" aria-current="<?php echo $i === $page ? 'page' : 'false'; ?>"><?php echo $i; ?></a>
+            <?php endfor; ?>
+            <a class="pagination-btn <?php echo $nextDisabled ? 'pointer-events-none opacity-30' : ''; ?>" href="?page=<?php echo $nextPage . $queryString; ?>" aria-label="Página siguiente" <?php echo $nextDisabled ? 'aria-disabled="true" tabindex="-1"' : ''; ?>>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            </a>
+          </nav>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
 </main>
 
 <script>
-        const bedroomButtons = document.querySelectorAll('aside .flex.flex-wrap button');
-        bedroomButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                bedroomButtons.forEach(b => {
-                    b.classList.remove('border-2', 'border-primary', 'text-primary', 'font-bold');
-                    b.classList.add('border', 'border-outline-variant');
-                });
-                btn.classList.add('border-2', 'border-primary', 'text-primary', 'font-bold');
-                btn.classList.remove('border', 'border-outline-variant');
-            });
-        });
-    </script>
+(function () {
+  var searchInput = document.getElementById('searchInput');
+  var searchContainer = document.getElementById('searchContainer');
+  if (!searchInput || !searchContainer) return;
+  var dropdown = document.createElement('div');
+  dropdown.id = 'searchDropdown';
+  dropdown.className = 'absolute top-full left-0 right-0 mt-2 z-50 hidden';
+  dropdown.style.background = 'var(--color-cream)';
+  dropdown.style.border = '1px solid var(--color-beige-border)';
+  dropdown.style.borderRadius = '16px';
+  dropdown.style.boxShadow = '0 20px 25px -5px rgba(0,0,0,.12)';
+  dropdown.style.overflow = 'hidden';
+  searchContainer.appendChild(dropdown);
 
-<script>
-const searchInput = document.getElementById('searchInput');
-const searchContainer = document.getElementById('searchContainer');
-if (searchInput && searchContainer) {
-    const dropdown = document.createElement('div');
-    dropdown.id = 'searchDropdown';
-    dropdown.className = 'absolute top-full left-0 right-0 mt-1 bg-surface dark:bg-inverse-surface border border-outline-variant/30 dark:border-outline-variant/10 shadow-xl rounded-none overflow-hidden hidden z-50';
-    searchContainer.style.position = 'relative';
-    searchContainer.appendChild(dropdown);
-
-    let debounceTimer;
-
-    searchInput.addEventListener('input', function() {
-        clearTimeout(debounceTimer);
-        const q = this.value.trim();
-        if (q.length < 2) { dropdown.classList.add('hidden'); return; }
-        debounceTimer = setTimeout(function() {
-            fetch('ajax-search.php?q=' + encodeURIComponent(q))
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    if (!data.length) { dropdown.classList.add('hidden'); return; }
-                    dropdown.innerHTML = '';
-                    data.forEach(function(p) {
-                        const item = document.createElement('a');
-                        item.href = 'detalles.php?id=' + p.id;
-                        item.className = 'flex items-center gap-3 px-4 py-3 hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors border-b border-outline-variant/10 last:border-b-0';
-                        item.innerHTML =
-                            '<img class="w-10 h-10 object-cover flex-shrink-0" src="' + (p.img || '') + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' +
-                            '<div class="flex-1 min-w-0"><p class="font-label-md text-label-md text-on-surface dark:text-inverse-on-surface truncate">' + escapeHtml(p.location) + '</p><p class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant">' + escapeHtml(p.price) + '</p></div>';
-                        dropdown.appendChild(item);
-                    });
-                    dropdown.classList.remove('hidden');
-                })
-                .catch(function() { dropdown.classList.add('hidden'); });
-        }, 250);
-    });
-
-    searchInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') { dropdown.classList.add('hidden'); }
-    });
-
-    document.addEventListener('click', function(e) {
-        if (!searchContainer.contains(e.target)) { dropdown.classList.add('hidden'); }
-    });
-
-    searchInput.addEventListener('blur', function() {
-        setTimeout(function() { dropdown.classList.add('hidden'); }, 200);
-    });
-}
-function escapeHtml(str) {
+  function escapeHtml(str) {
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
-}
+  }
+  var timer;
+  searchInput.addEventListener('input', function () {
+    clearTimeout(timer);
+    var q = this.value.trim();
+    if (q.length < 2) { dropdown.classList.add('hidden'); return; }
+    timer = setTimeout(function () {
+      fetch('ajax-search.php?q=' + encodeURIComponent(q))
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (!data.length) { dropdown.classList.add('hidden'); return; }
+          dropdown.innerHTML = '';
+          data.forEach(function (p) {
+            var item = document.createElement('a');
+            item.href = 'detalles.php?id=' + p.id;
+            item.className = 'flex items-center gap-3 px-4 py-3 transition-colors';
+            item.style.borderBottom = '1px solid var(--color-beige-border)';
+            item.innerHTML =
+              '<img class="w-10 h-10 object-cover flex-shrink-0 rounded" src="' + (p.img || '') + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' +
+              '<span class="flex-1 min-w-0"><span class="block text-sm truncate" style="color:var(--color-navy);">' + escapeHtml(p.location) + '</span>' +
+              '<span class="block text-xs" style="color:var(--color-gold-text);">' + escapeHtml(p.price) + '</span></span>';
+            dropdown.appendChild(item);
+          });
+          dropdown.classList.remove('hidden');
+        })
+        .catch(function () { dropdown.classList.add('hidden'); });
+    }, 250);
+  });
+  searchInput.addEventListener('keydown', function (e) { if (e.key === 'Escape') dropdown.classList.add('hidden'); });
+  document.addEventListener('click', function (e) { if (!searchContainer.contains(e.target)) dropdown.classList.add('hidden'); });
+  searchInput.addEventListener('blur', function () { setTimeout(function () { dropdown.classList.add('hidden'); }, 200); });
+})();
 </script>
 
-<?php include 'includes/footer.php';
+<?php include 'includes/footer.php'; ?>

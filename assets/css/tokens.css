@@ -1,0 +1,80 @@
+/* Bardial design tokens (from bardial-diseno-spec.md) */
+:root {
+  /* Colors */
+  --color-cream: #f7f4ed;
+  --color-cream-alt: #eee8dd;
+  --color-navy: #10263b;
+  --color-navy-deep: #102a43;
+  --color-navy-btn: #122f49;
+  --color-navy-btn-hover: #0b2136;
+  --color-navy-footer: #091d30;
+  --color-gold: #b08a47;
+  --color-gold-text: #9a773b;
+  --color-gold-price: #9d7638;
+  --color-gold-icon: #ad8541;
+  --color-gold-line: #b89552;
+  --color-gold-dark: #c8a75f;
+  --color-gold-eyebrow-dark: #d8c397;
+  --color-beige-border: #d3cab9;
+  --color-beige-border-2: #d8d0c3;
+  --color-beige-border-3: #d8d0c1;
+  --color-beige-border-4: #ddd5c7;
+  --color-beige-icon: #eee3ce;
+  --color-beige-hover: #f0e9dc;
+  --color-gray-1: #64717d;
+  --color-gray-2: #66727e;
+  --color-gray-3: #697580;
+  --color-gray-4: #6c7680;
+  --color-gray-5: #73808a;
+  --color-gray-6: #747b80;
+  --color-gray-7: #7b7d79;
+  --color-gray-8: #80776b;
+  --color-gray-9: #86837c;
+  --color-gray-10: #968c7b;
+
+  /* Typography */
+  --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+  --font-display: "Playfair Display", "Libre Caslon Text", Georgia, serif;
+
+  /* Layout */
+  --container-max: 1440px;
+  --container-pad-x: 24px;
+  --container-pad-x-lg: 48px;
+  --radius-sm: 16px;
+  --radius-arch-top: 10rem;
+  --radius-arch-top-sm: 14rem;
+  --radius-arch-bottom: 1.2rem;
+
+  /* Selection */
+  --selection-bg: #d7bd88;
+  --selection-text: #091d30;
+}
+
+* { -webkit-font-smoothing: antialiased; }
+
+::selection { background: var(--selection-bg); color: var(--selection-text); }
+::-moz-selection { background: var(--selection-bg); color: var(--selection-text); }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-cream);
+  color: var(--color-navy);
+}
+
+a, button { cursor: pointer; }
+
+.container-bardial {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding-left: var(--container-pad-x);
+  padding-right: var(--container-pad-x);
+}
+@media (min-width: 1024px) {
+  .container-bardial { padding-left: var(--container-pad-x-lg); padding-right: var(--container-pad-x-lg); }
+}

@@ -1,0 +1,49 @@
+/* Catálogo — estilos de página */
+
+/* Checkboxes de filtros */
+.filter-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-beige-border);
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: background 160ms, border-color 160ms;
+}
+.filter-checkbox:checked {
+  background: var(--color-navy-deep);
+  border-color: var(--color-navy-deep);
+}
+.filter-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+.filter-checkbox:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; }
+
+/* Paginación */
+.pagination-btn {
+  min-width: 44px;
+  height: 44px;
+  padding: 0 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid var(--color-beige-border);
+  color: var(--color-navy);
+  font-size: 0.875rem;
+  transition: all 160ms;
+}
+.pagination-btn:hover { border-color: var(--color-gold); background: var(--color-beige-icon); }
+.pagination-btn.active { background: var(--color-navy-deep); border-color: var(--color-navy-deep); color: var(--color-cream); }

@@ -76,7 +76,7 @@ try {
             ['price' => '$5,900,000 MXN', 'price_value' => 5900000, 'location' => 'Tulum, Quintana Roo', 'type' => 'Departamento Premium', 'city' => 'Tulum', 'bed' => 2, 'bath' => 2, 'sqm' => 165, 'services' => 'Vista al Mar, Seguridad 24h, Alberca, Gimnasio, Estacionamiento Privado', 'description' => 'Departamento premium frente al mar en Tulum con amenidades de primer nivel.', 'sold' => false, 'video' => '', 'img' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuC171uM2HIxfyby1OgpYwTfIxQlos-hF0YWnLXgvxpiKvCPtw8JACSg20s2CsIdujfkoPnUtQYvbv7jkPL11jwM9AxMivcu_eIenyjTrWCrqDQSBd-NOTiCOV2ryoyTUMQIdViiKI5xjfukQSgKdiR9tlMdCnCZI3YIX3uVfLQlc3-YIr-TmDYCHMI95yjUXcdDxkTWvuBUV-GyQiQTZ2wVzwhbzYvDWmAA1h9Ws754PKeutrotuLqyzhg8vKVY-tWddcfwNJlCmWRI', 'images' => ''],
         ];
 
-        $stmt = $pdo->prepare('INSERT INTO propiedades (price, price_value, location, type, city, bed, bath, sqm, services, description, sold, video, img, images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt = $pdo->prepare('INSERT INTO propiedades (price, price_value, location, type, city, bed, bath, sqm, services, description, sold, video, img, images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         foreach ($properties as $p) {
             $stmt->execute([
                 $p['price'],

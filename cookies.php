@@ -1,40 +1,79 @@
-<?php $pageTitle = 'Bardial Inmobiliaria | Política de Cookies'; $activePage = ''; ?>
+<?php $pageTitle = 'Bardial Inmobiliaria | Política de Cookies'; $activePage = ''; $pageCss = 'legal'; $legalPage = 'cookies'; ?>
 <?php include 'includes/head.php'; ?>
 <?php include 'includes/header.php'; ?>
 
-<main class="max-w-[1800px] mx-auto px-margin-mobile md:px-margin-desktop py-24">
-<section class="max-w-4xl mx-auto">
-<div class="text-center mb-16">
-<span class="text-secondary-fixed-dim font-label-md text-label-md uppercase tracking-[0.2em] mb-4 block">Legal</span>
-<h1 class="font-headline-lg text-headline-lg text-brand-navy">Política de Cookies</h1>
-<div class="h-1 w-24 bg-secondary-fixed-dim mt-6 mx-auto"></div>
-</div>
-<div class="space-y-10 text-on-surface-variant font-body-md text-body-md leading-relaxed">
-<div>
-<h2 class="font-headline-md text-headline-md text-brand-navy mb-4">1. ¿Qué son las Cookies?</h2>
-<p>Las cookies son pequeños archivos de texto que se almacenan en su dispositivo cuando visita un sitio web. Se utilizan ampliamente para hacer que los sitios web funcionen de manera más eficiente y proporcionar información a los propietarios del sitio.</p>
-</div>
-<div>
-<h2 class="font-headline-md text-headline-md text-brand-navy mb-4">2. Cómo Utilizamos las Cookies</h2>
-<p>En Bardial Inmobiliaria utilizamos cookies para mejorar su experiencia de navegación, analizar el tráfico del sitio web y personalizar el contenido que mostramos. No utilizamos cookies para recopilar información personal sin su consentimiento.</p>
-</div>
-<div>
-<h2 class="font-headline-md text-headline-md text-brand-navy mb-4">3. Tipos de Cookies que Utilizamos</h2>
-<p><strong>Cookies esenciales:</strong> Necesarias para el funcionamiento básico del sitio web.<br/>
-<strong>Cookies de rendimiento:</strong> Nos ayudan a entender cómo los visitantes interactúan con el sitio.<br/>
-<strong>Cookies de funcionalidad:</strong> Permiten recordar sus preferencias para una experiencia personalizada.<br/>
-<strong>Cookies de terceros:</strong> Utilizadas por servicios externos como Google Fonts y Tailwind CSS CDN.</p>
-</div>
-<div>
-<h2 class="font-headline-md text-headline-md text-brand-navy mb-4">4. Control de Cookies</h2>
-<p>Puede controlar y/o eliminar las cookies según su criterio. Puede eliminar todas las cookies almacenadas en su dispositivo y configurar la mayoría de los navegadores para que las bloqueen. Sin embargo, si bloquea las cookies, es posible que algunas funcionalidades del sitio no estén disponibles.</p>
-</div>
-<div>
-<h2 class="font-headline-md text-headline-md text-brand-navy mb-4">5. Más Información</h2>
-<p>Para obtener más información sobre cómo manejamos sus datos, consulte nuestra <a class="text-brand-navy underline hover:text-secondary-fixed-dim transition-colors" href="privacy.php">Política de Privacidad</a>. Si tiene preguntas sobre nuestra política de cookies, contáctenos en <strong>info@bardialinmobiliaria.com</strong>.</p>
-</div>
-</div>
-</section>
+<main class="flex-grow">
+  <div class="container-bardial pt-32 pb-24 md:pb-32">
+    <nav class="legal-breadcrumb" aria-label="Ruta de navegación">
+      <a href="index.php">Inicio</a>
+      <span aria-hidden="true">›</span>
+      <span>Información legal</span>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">Política de Cookies</span>
+    </nav>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <article class="lg:col-span-8">
+        <p class="eyebrow">Información legal</p>
+        <h1 class="legal-title mt-6">Política de Cookies</h1>
+        <div class="legal-rule"></div>
+
+        <section class="legal-section">
+          <span class="legal-num" aria-hidden="true">01</span>
+          <div>
+            <h2>1. ¿Qué son las Cookies?</h2>
+            <p>Las cookies son pequeños archivos de texto que se almacenan en su dispositivo cuando visita un sitio web. Se utilizan ampliamente para hacer que los sitios web funcionen de manera más eficiente y proporcionar información a los propietarios del sitio.</p>
+          </div>
+        </section>
+        <section class="legal-section">
+          <span class="legal-num" aria-hidden="true">02</span>
+          <div>
+            <h2>2. Cómo Utilizamos las Cookies</h2>
+            <p>En Bardial Inmobiliaria utilizamos cookies para mejorar su experiencia de navegación, analizar el tráfico del sitio web y personalizar el contenido que mostramos. No utilizamos cookies para recopilar información personal sin su consentimiento.</p>
+          </div>
+        </section>
+        <section class="legal-section">
+          <span class="legal-num" aria-hidden="true">03</span>
+          <div>
+            <h2>3. Tipos de Cookies que Utilizamos</h2>
+            <p><strong>Cookies esenciales:</strong> Necesarias para el funcionamiento básico del sitio web.<br/>
+            <strong>Cookies de rendimiento:</strong> Nos ayudan a entender cómo los visitantes interactúan con el sitio.<br/>
+            <strong>Cookies de funcionalidad:</strong> Permiten recordar sus preferencias para una experiencia personalizada.<br/>
+            <strong>Cookies de terceros:</strong> Utilizadas por servicios externos como Google Fonts y Tailwind CSS CDN.</p>
+          </div>
+        </section>
+        <section class="legal-section">
+          <span class="legal-num" aria-hidden="true">04</span>
+          <div>
+            <h2>4. Control de Cookies</h2>
+            <p>Puede controlar y/o eliminar las cookies según su criterio. Puede eliminar todas las cookies almacenadas en su dispositivo y configurar la mayoría de los navegadores para que las bloqueen. Sin embargo, si bloquea las cookies, es posible que algunas funcionalidades del sitio no estén disponibles.</p>
+          </div>
+        </section>
+        <section class="legal-section">
+          <span class="legal-num" aria-hidden="true">05</span>
+          <div>
+            <h2>5. Más Información</h2>
+            <p>Para obtener más información sobre cómo manejamos sus datos, consulte nuestra <a class="legal-inline-link" href="privacy.php">Política de Privacidad</a>. Si tiene preguntas sobre nuestra política de cookies, contáctenos en <strong>info@bardialinmobiliaria.com</strong>.</p>
+          </div>
+        </section>
+      </article>
+
+      <aside class="lg:col-span-4">
+        <div class="legal-aside">
+          <h2 class="legal-aside-title">Documentos legales</h2>
+          <nav class="legal-nav" aria-label="Documentos legales">
+            <a href="terms.php" class="legal-nav-link">Términos de Servicio</a>
+            <a href="privacy.php" class="legal-nav-link">Política de Privacidad</a>
+            <a href="cookies.php" class="legal-nav-link active" aria-current="page">Política de Cookies</a>
+          </nav>
+          <div class="legal-aside-contact">
+            <p>¿Necesita más información?</p>
+            <a href="contacto.php">Contactar con Bardial <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
 </main>
 
 <?php include 'includes/footer.php'; ?>
