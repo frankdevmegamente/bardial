@@ -37,7 +37,6 @@ $catalogProperties = bardial_with_categories($properties);
         <div class="reveal mt-14 flex flex-wrap gap-10 sm:gap-16 pt-7 border-t" style="border-color:var(--color-beige-border-3);">
           <div><p class="font-display text-[30px]" style="color:var(--color-navy);">12+</p><p class="text-xs mt-1" style="color:var(--color-gray-5);">Años de experiencia</p></div>
           <div><p class="font-display text-[30px]" style="color:var(--color-navy);">460</p><p class="text-xs mt-1" style="color:var(--color-gray-5);">Operaciones exitosas</p></div>
-          <div><p class="font-display text-[30px]" style="color:var(--color-navy);">98%</p><p class="text-xs mt-1" style="color:var(--color-gray-5);">Clientes satisfechos</p></div>
         </div>
       </div>
 
@@ -51,8 +50,8 @@ $catalogProperties = bardial_with_categories($properties);
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 15h9v-2h-2v-2h-2v2h-2m-3 2V9l2-2"/></svg>
           </div>
           <div>
-            <p class="text-[10.4px] uppercase" style="letter-spacing:.2em;color:var(--color-gray-8);">Nueva propiedad</p>
-            <p class="text-sm font-medium mt-1" style="color:var(--color-navy);">Casa Roble · En venta</p>
+            <p class="text-[10.4px] uppercase" style="letter-spacing:.2em;color:#80776b;">Nueva propiedad</p>
+            <p class="text-sm font-medium mt-1" style="color:var(--color-navy-footer);">Casa Roble · En venta</p>
           </div>
         </div>
         <svg class="absolute -right-14 bottom-8 w-[208px] h-[144px] pointer-events-none opacity-70" viewBox="0 0 220 140" fill="none" stroke="#fff" stroke-width="1.2" aria-hidden="true">
